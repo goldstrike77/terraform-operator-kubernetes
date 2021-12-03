@@ -2,7 +2,7 @@
 terraform {
   backend "consul" {
     address = "consul.service.dc01.local:8500"
-    path    = "operator/loki"
+    path    = "tfstate/operator/loki/terraform.tfstate"
     scheme  = "https"
   }
 }

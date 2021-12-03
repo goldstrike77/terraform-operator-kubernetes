@@ -2,7 +2,7 @@
 terraform {
   backend "consul" {
     address = "consul.service.dc01.local:8500"
-    path    = "operator/grafana"
+    path    = "tfstate/operator/grafana/terraform.tfstate"
     scheme  = "https"
   }
 }

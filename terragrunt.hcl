@@ -23,7 +23,7 @@ remote_state {
   config = {
     address = "consul.service.dc01.local:8500"
     scheme = "https"
-    path = "operator/${path_relative_to_include()}"
+    path = "tfstate/operator/${path_relative_to_include()}/terraform.tfstate"
   }
   generate = {
     path = "backend.tf"

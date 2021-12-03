@@ -2,7 +2,7 @@
 terraform {
   backend "consul" {
     address = "consul.service.dc01.local:8500"
-    path    = "operator/ingress-nginx"
+    path    = "tfstate/operator/ingress-nginx/terraform.tfstate"
     scheme  = "https"
   }
 }
