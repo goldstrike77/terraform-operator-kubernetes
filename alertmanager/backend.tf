@@ -2,7 +2,7 @@
 terraform {
   backend "consul" {
     address = "consul.service.dc01.local:8500"
-    path    = "tfstate/operator/fluent-bit/terraform.tfstate"
+    path    = "tfstate/operator/alertmanager/terraform.tfstate"
     scheme  = "https"
   }
 }
