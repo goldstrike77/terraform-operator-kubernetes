@@ -60,19 +60,15 @@ loki:
   # @default -- See values.yaml
   config: |
     auth_enabled: false
-
     server:
       http_listen_port: 3100
-
     distributor:
       ring:
         kvstore:
           store: memberlist
-
     memberlist:
       join_members:
         - {{ include "loki.fullname" . }}-memberlist
-
     ingester:
       lifecycler:
         ring:
@@ -86,7 +82,6 @@ loki:
       max_transfer_retries: 0
       wal:
         dir: /var/loki/wal
-
     limits_config:
       enforce_metric_name: false
       reject_old_samples: true
@@ -98,7 +93,6 @@ loki:
       max_line_size_truncate: true
       max_entries_limit_per_query: 10000
       max_global_streams_per_user: 100000
-
     schema_config:
       configs:
         - from: 2020-09-07
@@ -108,7 +102,6 @@ loki:
           index:
             prefix: loki_
             period: 24h
-
     storage_config:
       aws:
         bucketnames: loki
@@ -134,7 +127,6 @@ loki:
         {{- end }}
       filesystem:
         directory: /var/loki/chunks
-
     chunk_store_config:
       max_look_back_period: 0s
       chunk_cache_config:
@@ -145,11 +137,9 @@ loki:
           consistent_hash: true
           host: {{ include "loki.memcachedChunksFullname" . }}
           service: http
-
     table_manager:
       retention_deletes_enabled: false
       retention_period: 0s
-
     query_range:
       align_queries_with_step: true
       max_retries: 5
@@ -164,18 +154,14 @@ loki:
             service: http
             timeout: 500ms
             update_interval: 1m
-
     frontend_worker:
       frontend_address: {{ include "loki.queryFrontendFullname" . }}:9095
-
     frontend:
       log_queries_longer_than: 5s
       compress_responses: true
       tail_proxy_url: http://{{ include "loki.querierFullname" . }}:3100
-
     compactor:
       shared_store: filesystem
-
     ruler:
       storage:
         type: local

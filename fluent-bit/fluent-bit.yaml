@@ -1,6 +1,6 @@
 ---
 loki:
-  serviceName: "loki-distributed-distributor"
+  serviceName: "loki-distributed-distributor.loki.svc.cluster.local"
   servicePort: 3100
   serviceScheme: http
   servicePath: /api/prom/push
@@ -103,13 +103,13 @@ volumes:
     path: /var/log
 - name: varlibdockercontainers
   hostPath:
-    path: /var/lib/docker/containers
+    path: /data/docker/containers
 
 volumeMounts:
 - name: varlog
   mountPath: /var/log
 - name: varlibdockercontainers
-  mountPath: /var/lib/docker/containers
+  mountPath: /data/docker/containers
   readOnly: true
 
 serviceMonitor:
