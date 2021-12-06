@@ -127,7 +127,7 @@ loki:
         cache_ttl: 168h
         {{- if .Values.indexGateway.enabled }}
         index_gateway_client:
-          server_address: dns:///{{ include "loki-distributed-gateway" . }}:9095
+          server_address: dns:///{{ include "loki.indexGatewayFullname" . }}:9095
         {{- end }}
       index_queries_cache_config:
         enable_fifocache: false
@@ -594,7 +594,7 @@ tableManager:
 # Configuration for the gateway
 gateway:
   # -- Specifies whether the gateway should be enabled
-  enabled: false
+  enabled: true
   # -- Number of replicas for the gateway
   replicas: 2
   # -- Enable logging of 2xx and 3xx HTTP requests
@@ -693,7 +693,7 @@ gateway:
   # Gateway ingress configuration
   ingress:
     # -- Specifies whether an ingress for the gateway should be created
-    enabled: false
+    enabled: true
     # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
     # ingressClassName: nginx
     # -- Annotations for the gateway ingress
@@ -704,7 +704,7 @@ gateway:
         paths:
           - path: /
             # -- pathType (e.g. ImplementationSpecific, Prefix, .. etc.) might also be required by some Ingress Controllers
-            # pathType: Prefix
+            pathType: Prefix
     # -- TLS configuration for the gateway ingress
     tls:
       - secretName: loki-gateway-tls
@@ -1023,7 +1023,7 @@ ruler:
 # Configuration for the index-gateway
 indexGateway:
   # -- Specifies whether the index-gateway should be enabled
-  enabled: false
+  enabled: true
   # -- Number of replicas for the index-gateway
   replicas: 2
   image:
@@ -1111,7 +1111,7 @@ memcached:
 
 memcachedExporter:
   # -- Specifies whether the Memcached Exporter should be enabled
-  enabled: true
+  enabled: false
   image:
     # -- The Docker registry for the Memcached Exporter
     registry: docker.io
