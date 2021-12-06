@@ -83,6 +83,7 @@ loki:
       wal:
         dir: /var/loki/wal
     limits_config:
+      ingestion_rate_strategy: global
       enforce_metric_name: false
       reject_old_samples: true
       reject_old_samples_max_age: 168h
@@ -100,7 +101,10 @@ loki:
           object_store: aws
           schema: v11
           index:
-            prefix: loki_
+            prefix: loki_index_
+            period: 24h
+          chunks:
+            prefix: loki_chunk_
             period: 24h
     storage_config:
       aws:
@@ -125,18 +129,51 @@ loki:
         index_gateway_client:
           server_address: dns:///{{ include "loki-distributed-gateway" . }}:9095
         {{- end }}
+      index_queries_cache_config:
+        enable_fifocache: false
+        memcached:
+          expiration: 1h
+          batch_size: 100
+          parallelism: 100
+        memcached_client:
+          consistent_hash: true
+          host: {{ include "loki.memcachedIndexQueriesFullname" . }}
+          max_idle_conns: 16
+          service: http
+          timeout: 2s
+          update_interval: 1m
       filesystem:
         directory: /var/loki/chunks
+      index_cache_validity: 5m
+      max_chunk_batch_size: 100
     chunk_store_config:
       max_look_back_period: 0s
       chunk_cache_config:
+        enable_fifocache: false
         memcached:
+          expiration: 1h
           batch_size: 100
           parallelism: 100
         memcached_client:
           consistent_hash: true
           host: {{ include "loki.memcachedChunksFullname" . }}
+          max_idle_conns: 16
           service: http
+          timeout: 2s
+          update_interval: 1m
+      write_dedupe_cache_config:
+        enable_fifocache: false
+        memcached:
+          expiration: 1h
+          batch_size: 100
+          parallelism: 100
+        memcached_client:
+          consistent_hash: true
+          host: {{ include "loki.memcachedIndexWritesFullname" . }}
+          max_idle_conns: 16
+          service: http
+          timeout: 2s
+          update_interval: 1m
     table_manager:
       retention_deletes_enabled: false
       retention_period: 0s
@@ -152,7 +189,7 @@ loki:
             host: {{ include "loki.memcachedFrontendFullname" . }}
             max_idle_conns: 16
             service: http
-            timeout: 500ms
+            timeout: 2s
             update_interval: 1m
     frontend_worker:
       frontend_address: {{ include "loki.queryFrontendFullname" . }}:9095
