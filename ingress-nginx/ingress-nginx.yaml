@@ -521,8 +521,9 @@ controller:
     internal:
       enabled: false
       annotations: {}
+      #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 
-      # loadBalancerIP: ""
+      # loadBalancerIP: "10.30.3.254"
 
       ## Restrict access For LoadBalancer service. Defaults to 0.0.0.0/0.
       loadBalancerSourceRanges: []
