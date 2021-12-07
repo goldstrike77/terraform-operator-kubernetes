@@ -62,6 +62,9 @@ loki:
     auth_enabled: false
     server:
       http_listen_port: 3100
+      grpc_listen_port: 9095
+      http_server_read_timeout: 60s
+      http_server_write_timeout: 60s
     distributor:
       ring:
         kvstore:
@@ -75,25 +78,13 @@ loki:
           kvstore:
             store: memberlist
           replication_factor: 2
-      chunk_idle_period: 30m
       chunk_block_size: 262144
       chunk_encoding: snappy
+      chunk_idle_period: 30m
       chunk_retain_period: 1m
       max_transfer_retries: 0
       wal:
         dir: /var/loki/wal
-    limits_config:
-      ingestion_rate_strategy: global
-      enforce_metric_name: false
-      reject_old_samples: true
-      reject_old_samples_max_age: 168h
-      max_cache_freshness_per_query: 10m
-      ingestion_rate_mb: 32
-      ingestion_burst_size_mb: 64
-      max_line_size: 32kb
-      max_line_size_truncate: true
-      max_entries_limit_per_query: 10000
-      max_global_streams_per_user: 100000
     schema_config:
       configs:
         - from: 2020-09-07
@@ -108,17 +99,17 @@ loki:
             period: 24h
     storage_config:
       aws:
+        access_key_id: QGO91AW67HUB8VOZ3PLN
         bucketnames: loki
         endpoint: demo-dev-sit-test-minio-thanos.service.dc01.local:9001
-        region: s3_region
-        access_key_id: QGO91AW67HUB8VOZ3PLN
-        secret_access_key: JG75niBtxjF3ExE7AZ2dvjhR5gGrXbo0AA9F78D7
         insecure: false
+        region: s3_region
+        secret_access_key: JG75niBtxjF3ExE7AZ2dvjhR5gGrXbo0AA9F78D7
         sse_encryption: false
         http_config:
           idle_conn_timeout: 2m
-          response_header_timeout: 5m
           insecure_skip_verify: true
+          response_header_timeout: 5m
         s3forcepathstyle: true
       boltdb_shipper:
         shared_store: s3
@@ -132,15 +123,15 @@ loki:
       index_queries_cache_config:
         enable_fifocache: false
         memcached:
-          expiration: 1h
           batch_size: 100
+          expiration: 1h
           parallelism: 100
         memcached_client:
           consistent_hash: true
           host: {{ include "loki.memcachedIndexQueriesFullname" . }}
           max_idle_conns: 16
           service: http
-          timeout: 2s
+          timeout: 5s
           update_interval: 1m
       filesystem:
         directory: /var/loki/chunks
@@ -151,38 +142,33 @@ loki:
       chunk_cache_config:
         enable_fifocache: false
         memcached:
-          expiration: 1h
           batch_size: 100
+          expiration: 1h
           parallelism: 100
         memcached_client:
           consistent_hash: true
           host: {{ include "loki.memcachedChunksFullname" . }}
           max_idle_conns: 16
           service: http
-          timeout: 2s
+          timeout: 5s
           update_interval: 1m
       write_dedupe_cache_config:
         enable_fifocache: false
         memcached:
-          expiration: 1h
           batch_size: 100
+          expiration: 1h
           parallelism: 100
         memcached_client:
           consistent_hash: true
           host: {{ include "loki.memcachedIndexWritesFullname" . }}
           max_idle_conns: 16
           service: http
-          timeout: 2s
+          timeout: 5s
           update_interval: 1m
-    table_manager:
-      retention_deletes_enabled: true
-      retention_period: 720h
-      poll_interval: 10m
-      creation_grace_period: 3h
     querier:
-      query_timeout: 60s
       max_concurrent: 30
       query_store_only: false
+      query_timeout: 60s
     query_range:
       align_queries_with_step: true
       max_retries: 5
@@ -195,7 +181,7 @@ loki:
             host: {{ include "loki.memcachedFrontendFullname" . }}
             max_idle_conns: 16
             service: http
-            timeout: 2s
+            timeout: 5s
             update_interval: 1m
     frontend_worker:
       frontend_address: {{ include "loki.queryFrontendFullname" . }}:9095
@@ -204,10 +190,26 @@ loki:
       log_queries_longer_than: 5s
       compress_responses: true
       tail_proxy_url: http://{{ include "loki.querierFullname" . }}:3100
+    limits_config:
+      enforce_metric_name: false
+      ingestion_burst_size_mb: 64
+      ingestion_rate_mb: 32
+      ingestion_rate_strategy: global
+      max_cache_freshness_per_query: 10m
+      max_entries_limit_per_query: 10000
+      max_global_streams_per_user: 100000
+      max_line_size: 32kb
+      max_line_size_truncate: true
+      reject_old_samples: true
+      reject_old_samples_max_age: 168h
+      retention_period: 744h
     compactor:
-      working_directory: /var/loki/compactor
-      shared_store: s3
       compaction_interval: 2h
+      retention_delete_delay: 2h
+      retention_delete_worker_count: 150
+      retention_enabled: true
+      shared_store: s3
+      working_directory: /var/loki/compactor
     ruler:
       storage:
         type: local
@@ -603,7 +605,7 @@ tableManager:
 # Configuration for the gateway
 gateway:
   # -- Specifies whether the gateway should be enabled
-  enabled: true
+  enabled: false
   # -- Number of replicas for the gateway
   replicas: 2
   # -- Enable logging of 2xx and 3xx HTTP requests
@@ -842,7 +844,7 @@ gateway:
 # Configuration for the compactor
 compactor:
   # -- Specifies whether compactor should be enabled
-  enabled: false
+  enabled: true
   image:
     # -- The Docker registry for the compactor image. Overrides `loki.image.registry`
     registry: null
@@ -1032,7 +1034,7 @@ ruler:
 # Configuration for the index-gateway
 indexGateway:
   # -- Specifies whether the index-gateway should be enabled
-  enabled: true
+  enabled: false
   # -- Number of replicas for the index-gateway
   replicas: 2
   image:
@@ -1137,7 +1139,7 @@ memcachedChunks:
   # -- Specifies whether the Memcached chunks cache should be enabled
   enabled: true
   # -- Number of replicas for memcached-chunks
-  replicas: 2
+  replicas: 1
   # -- The name of the PriorityClass for memcached-chunks pods
   priorityClassName: null
   # -- Annotations for memcached-chunks pods
@@ -1188,7 +1190,7 @@ memcachedFrontend:
   # -- Specifies whether the Memcached frontend cache should be enabled
   enabled: true
   # -- Number of replicas for memcached-frontend
-  replicas: 2
+  replicas: 1
   # -- The name of the PriorityClass for memcached-frontend pods
   priorityClassName: null
   # -- Annotations for memcached-frontend pods
@@ -1239,7 +1241,7 @@ memcachedIndexQueries:
   # -- Specifies whether the Memcached index queries cache should be enabled
   enabled: true
   # -- Number of replicas for memcached-index-queries
-  replicas: 2
+  replicas: 1
   # -- The name of the PriorityClass for memcached-index-queries pods
   priorityClassName: null
   # -- Annotations for memcached-index-queries pods
@@ -1290,7 +1292,7 @@ memcachedIndexWrites:
   # -- Specifies whether the Memcached index writes cache should be enabled
   enabled: true
   # -- Number of replicas for memcached-index-writes
-  replicas: 2
+  replicas: 1
   # -- The name of the PriorityClass for memcached-index-writes pods
   priorityClassName: null
   # -- Annotations for memcached-index-writes pods

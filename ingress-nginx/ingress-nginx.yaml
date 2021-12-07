@@ -44,8 +44,8 @@ controller:
     use-forwarded-headers: "true"
     use-geoip: "false"
     use-gzip: "false"
-    log-format-escape-json: "true"
-    log-format-upstream: '{"bodyBytesSent":$body_bytes_sent,"host":"$host","ingressName":"$ingress_name","namespace":"$namespace","protocol":"$server_protocol","proxyAlternativeUpstreamName":"$proxy_alternative_upstream_name","proxyUpstreamName":"$proxy_upstream_name","referer":"$http_referer","remoteIp":"$remote_addr","requestID":"$req_id","requestMethod":"$request_method","requestSize":"$request_length","requestTime":$request_time,"requestUrl":"$request_uri","serviceName":"$service_name","servicePort":"$service_port","status":$status,"timestamp":"$time_iso8601","upstreamAddr":"$upstream_addr","upstreamResponseSize":"$upstream_response_length","upstreamResponseTime":"$upstream_response_time","upstreamStatus":"$upstream_status","userAgent":"$http_user_agent"}'
+    # log-format-escape-json: "true"
+    # log-format-upstream: '{"bodyBytesSent":$body_bytes_sent,"host":"$host","ingressName":"$ingress_name","namespace":"$namespace","protocol":"$server_protocol","proxyAlternativeUpstreamName":"$proxy_alternative_upstream_name","proxyUpstreamName":"$proxy_upstream_name","referer":"$http_referer","remoteIp":"$remote_addr","requestID":"$req_id","requestMethod":"$request_method","requestSize":"$request_length","requestTime":$request_time,"requestUrl":"$request_uri","serviceName":"$service_name","servicePort":"$service_port","status":$status,"timestamp":"$time_iso8601","upstreamAddr":"$upstream_addr","upstreamResponseSize":"$upstream_response_length","upstreamResponseTime":"$upstream_response_time","upstreamStatus":"$upstream_status","userAgent":"$http_user_agent"}'
 
   ## Annotations to be added to the controller config configuration configmap
   ##
