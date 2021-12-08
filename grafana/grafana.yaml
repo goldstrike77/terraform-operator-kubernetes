@@ -270,8 +270,8 @@ extraContainerVolumes: []
 ##
 persistence:
   type: pvc
-  enabled: false
-  # storageClassName: default
+  enabled: true
+  storageClassName: nfs-client
   accessModes:
     - ReadWriteOnce
   size: 10Gi
@@ -286,7 +286,7 @@ persistence:
   ## local storage in-memory to improve performance
   ##
   inMemory:
-    enabled: true
+    enabled: false
     ## The maximum usage on memory medium EmptyDir would be
     ## the minimum value between the SizeLimit specified
     ## here and the sum of memory limits of all containers in a pod
