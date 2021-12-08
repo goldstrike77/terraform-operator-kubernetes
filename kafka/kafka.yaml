@@ -756,7 +756,7 @@ externalAccess:
 persistence:
   ## @param persistence.enabled Enable Kafka data persistence using PVC, note that Zookeeper persistence is unaffected
   ##
-  enabled: false
+  enabled: true
   ## @param persistence.existingClaim Provide an existing `PersistentVolumeClaim`, the value is evaluated as a template
   ## If defined, PVC must be created manually before volume will be bound
   ## The value is evaluated as a template
@@ -768,7 +768,7 @@ persistence:
   ## If undefined (the default) or set to null, no storageClassName spec is
   ## set, choosing the default provisioner.
   ##
-  storageClass: ""
+  storageClass: "nfs-client"
   ## @param persistence.accessModes PV Access Mode
   ##
   accessModes:
@@ -792,7 +792,7 @@ persistence:
 logPersistence:
   ## @param logPersistence.enabled Enable Kafka logs persistence using PVC, note that Zookeeper persistence is unaffected
   ##
-  enabled: false
+  enabled: true
   ## @param logPersistence.existingClaim A manually managed Persistent Volume and Claim
   ## If defined, PVC must be created manually before volume will be bound
   ## The value is evaluated as a template
@@ -1295,6 +1295,9 @@ zookeeper:
     ## @param zookeeper.auth.serverPasswords Comma, semicolon or whitespace separated list of passwords to assign to users when created. Specify them as a string, for example: "pass4user1, pass4user2, pass4admin"
     ##
     serverPasswords: ""
+  heapSize: 2048
+  persistence:
+    storageClass: "nfs-client"
 ## This value is only used when zookeeper.enabled is set to false
 ##
 externalZookeeper:
