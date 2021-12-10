@@ -11,8 +11,8 @@ image:
   pullPolicy: IfNotPresent
 
 nfs:
-  server: demo-prd-infra-storage-nfs.service.dc01.local
-  path: /nfs
+  server: dem-p-inf-nod01.node.dc01.local
+  path: /data/nfs
   mountOptions:
 
 # For creating the StorageClass automatically:

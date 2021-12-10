@@ -61,6 +61,7 @@ loki:
   config: |
     auth_enabled: false
     server:
+      log_level: warn
       http_listen_port: 3100
       grpc_listen_port: 9095
       http_server_read_timeout: 60s
@@ -99,12 +100,12 @@ loki:
             period: 24h
     storage_config:
       aws:
-        access_key_id: QGO91AW67HUB8VOZ3PLN
+        access_key_id: EOBCM5HRBQ1QXDQBXC1U
         bucketnames: loki
-        endpoint: demo-dev-sit-test-minio-thanos.service.dc01.local:9001
+        endpoint: demo-prd-infra-monitor-minio-loki.service.dc01.local:9001
         insecure: false
         region: s3_region
-        secret_access_key: JG75niBtxjF3ExE7AZ2dvjhR5gGrXbo0AA9F78D7
+        secret_access_key: Ax8HVo8BW7U7Rl4dJVt7orLhGF91xTMwcWlzkdb9
         sse_encryption: false
         http_config:
           idle_conn_timeout: 2m
@@ -152,19 +153,20 @@ loki:
           service: http
           timeout: 5s
           update_interval: 1m
-      write_dedupe_cache_config:
-        enable_fifocache: false
-        memcached:
-          batch_size: 100
-          expiration: 1h
-          parallelism: 100
-        memcached_client:
-          consistent_hash: true
-          host: {{ include "loki.memcachedIndexWritesFullname" . }}
-          max_idle_conns: 16
-          service: http
-          timeout: 5s
-          update_interval: 1m
+      # Not used with boltdb-shipper.
+      # write_dedupe_cache_config:
+      #   enable_fifocache: false
+      #   memcached:
+      #     batch_size: 100
+      #     expiration: 1h
+      #     parallelism: 100
+      #   memcached_client:
+      #     consistent_hash: true
+      #     host: {{ include "loki.memcachedIndexWritesFullname" . }}
+      #     max_idle_conns: 16
+      #     service: http
+      #     timeout: 5s
+      #     update_interval: 1m
     querier:
       max_concurrent: 30
       query_store_only: false
@@ -605,7 +607,7 @@ tableManager:
 # Configuration for the gateway
 gateway:
   # -- Specifies whether the gateway should be enabled
-  enabled: false
+  enabled: true
   # -- Number of replicas for the gateway
   replicas: 2
   # -- Enable logging of 2xx and 3xx HTTP requests
@@ -690,7 +692,7 @@ gateway:
     # -- Port of the gateway service
     port: 80
     # -- Type of the gateway service
-    type: ClusterIP
+    type: LoadBalancer
     # -- ClusterIP of the gateway service
     clusterIP: null
     # -- Node port if service type is NodePort
@@ -704,7 +706,7 @@ gateway:
   # Gateway ingress configuration
   ingress:
     # -- Specifies whether an ingress for the gateway should be created
-    enabled: true
+    enabled: false
     # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
     # ingressClassName: nginx
     # -- Annotations for the gateway ingress
@@ -1290,7 +1292,7 @@ memcachedIndexQueries:
 
 memcachedIndexWrites:
   # -- Specifies whether the Memcached index writes cache should be enabled
-  enabled: true
+  enabled: false
   # -- Number of replicas for memcached-index-writes
   replicas: 1
   # -- The name of the PriorityClass for memcached-index-writes pods
