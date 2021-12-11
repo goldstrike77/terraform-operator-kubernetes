@@ -758,13 +758,13 @@ gateway:
     # -- Config file contents for Nginx. Passed through the `tpl` function to allow templating
     # @default -- See values.yaml
     file: |
-      worker_processes  5;  ## Default: 1
+      worker_processes 4;
       error_log  /dev/stderr;
       pid        /tmp/nginx.pid;
       worker_rlimit_nofile 8192;
 
       events {
-        worker_connections  4096;  ## Default: 1024
+        worker_connections 4096;
       }
 
       http {

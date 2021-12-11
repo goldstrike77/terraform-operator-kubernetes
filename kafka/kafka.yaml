@@ -417,7 +417,7 @@ interBrokerListenerName: INTERNAL
 
 ## @param replicaCount Number of Kafka nodes
 ##
-replicaCount: 1
+replicaCount: 2
 ## @param minBrokerId Minimal broker.id value, nodes increment their `broker.id` respectively
 ## Brokers increment their ID starting at this minimal value.
 ## E.g., with `minBrokerId=100` and 3 nodes, IDs will be 100, 101, 102 for brokers 0, 1, and 2, respectively.
@@ -710,7 +710,7 @@ externalAccess:
   service:
     ## @param externalAccess.service.type Kubernetes Service type for external access. It can be NodePort or LoadBalancer
     ##
-    type: LoadBalancer
+    type: NodePort
     ## @param externalAccess.service.port Kafka port used for external access when service type is LoadBalancer
     ##
     port: 9094
@@ -848,7 +848,7 @@ rbac:
   ## binding Kafka ServiceAccount to a role
   ## that allows Kafka pods querying the K8s API
   ##
-  create: false
+  create: true
 
 ## @section Volume Permissions parameters
 
@@ -1223,7 +1223,7 @@ metrics:
 provisioning:
   ## @param provisioning.enabled Enable kafka provisioning Job
   ##
-  enabled: false
+  enabled: true
   ## @param provisioning.numPartitions Default number of partitions for topics when unspecified.
   numPartitions: 3
   ## @param provisioning.replicationFactor Default replication factor for topics when unspecified.
@@ -1296,6 +1296,7 @@ zookeeper:
     ##
     serverPasswords: ""
   heapSize: 2048
+  replicaCount: 3
   persistence:
     storageClass: "nfs-client"
 ## This value is only used when zookeeper.enabled is set to false
