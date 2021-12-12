@@ -1,16 +1,16 @@
 variable "deploy_spec" {
   default = {
     namespace = {
-      name = "kube-system"
+      name = "vector"
       annotations = {}
       labels = {}
     }
     helm = {
-      metallb = {
-        repository = "https://charts.bitnami.com/bitnami"
-        chart = "metallb"
-        version = "2.5.13"
-        values = "metallb.yaml"
+      vector-agent = {
+        repository = "https://helm.vector.dev"
+        chart = "vector-agent"
+        version = "0.19.1"
+        values = "vector-agent.yaml"
       }
     }
   }
