@@ -361,7 +361,7 @@ controller:
 
   # Mutually exclusive with keda autoscaling
   autoscaling:
-    enabled: true
+    enabled: false
     minReplicas: 2
     maxReplicas: 3
     targetCPUUtilizationPercentage: 60
@@ -847,7 +847,7 @@ defaultBackend:
 
   autoscaling:
     annotations: {}
-    enabled: true
+    enabled: false
     minReplicas: 2
     maxReplicas: 2
     targetCPUUtilizationPercentage: 50

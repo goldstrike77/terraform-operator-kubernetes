@@ -173,11 +173,17 @@ extraContainersPorts: []
 extraConfigDirSources: []
 
 # Additional volumes to pass to the `Pod`s managed by `DaemonSet`.
-extraVolumes: []
+extraVolumes:
+  - name: varlibdockercontainers
+    hostPath:
+      path: /data/docker/containers
 
 # Additional volume mounts to pass to the `vector` container of the `Pod`s
 # managed by `DaemonSet`.
-extraVolumeMounts: []
+extraVolumeMounts:
+  - name: varlibdockercontainers
+    mountPath: /data/docker/containers
+    readOnly: true
 
 # Vector will store it's data here.
 dataVolume:

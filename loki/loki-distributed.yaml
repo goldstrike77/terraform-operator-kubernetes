@@ -61,7 +61,7 @@ loki:
   config: |
     auth_enabled: false
     server:
-      log_level: warn
+      log_level: info
       http_listen_port: 3100
       grpc_listen_port: 9095
       http_server_read_timeout: 60s
@@ -79,7 +79,7 @@ loki:
           kvstore:
             store: memberlist
           replication_factor: 2
-      chunk_block_size: 262144
+      chunk_block_size: 32768
       chunk_encoding: snappy
       chunk_idle_period: 30m
       chunk_retain_period: 1m
@@ -358,7 +358,7 @@ distributor:
   replicas: 2
   autoscaling:
     # -- Enable autoscaling for the distributor
-    enabled: true
+    enabled: false
     # -- Minimum autoscaling replicas for the distributor
     minReplicas: 2
     # -- Maximum autoscaling replicas for the distributor
@@ -421,7 +421,7 @@ querier:
   replicas: 2
   autoscaling:
     # -- Enable autoscaling for the querier, this is only used if `queryIndex.enabled: true`
-    enabled: true
+    enabled: false
     # -- Minimum autoscaling replicas for the querier
     minReplicas: 2
     # -- Maximum autoscaling replicas for the querier
@@ -495,7 +495,7 @@ queryFrontend:
   replicas: 2
   autoscaling:
     # -- Enable autoscaling for the query-frontend
-    enabled: true
+    enabled: false
     # -- Minimum autoscaling replicas for the query-frontend
     minReplicas: 2
     # -- Maximum autoscaling replicas for the query-frontend
@@ -614,7 +614,7 @@ gateway:
   verboseLogging: true
   autoscaling:
     # -- Enable autoscaling for the gateway
-    enabled: true
+    enabled: false
     # -- Minimum autoscaling replicas for the gateway
     minReplicas: 2
     # -- Maximum autoscaling replicas for the gateway
