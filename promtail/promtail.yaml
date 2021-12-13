@@ -283,7 +283,7 @@ config:
 
     # If set to true, adds an additional label for the scrape job.
     # This helps debug the Promtail config.
-    addScrapeJobLabel: false
+    addScrapeJobLabel: true
 
     # -- You can put here any keys that will be directly added to the config file's 'client' block.
     # @default -- empty
@@ -297,8 +297,6 @@ config:
           listen_address: 0.0.0.0:{{ .Values.extraPorts.syslog.containerPort }}
           label_structured_data: yes
           max_message_length: 32768
-          labels:
-            job: syslog
         relabel_configs:
           - source_labels:
               - __syslog_message_hostname
@@ -315,6 +313,10 @@ config:
           - source_labels:
               - __syslog_message_proc_id
             target_label: procid
+          {{- if .Values.config.snippets.addScrapeJobLabel }}
+          - replacement: syslog
+            target_label: scrape_job
+          {{- end }}
 
     # -- You can put here any additional relabel_configs to "kubernetes-pods" job
     extraRelabelConfigs: []
