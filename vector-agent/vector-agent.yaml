@@ -223,6 +223,7 @@ customConfig:
       type: internal_metrics
     kubernetes_logs:
       type: kubernetes_logs
+      max_line_bytes: 32768
   sinks:
     loki_sink:
       type: loki
