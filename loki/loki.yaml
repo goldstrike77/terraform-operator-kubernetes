@@ -210,10 +210,10 @@ updateStrategy:
 
 serviceMonitor:
   enabled: false
-  interval: ""
+  interval: "60s"
   additionalLabels: {}
   annotations: {}
-  # scrapeTimeout: 10s
+  scrapeTimeout: 10s
 
 initContainers: []
 ## Init containers to be added to the loki pod.

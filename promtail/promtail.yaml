@@ -160,7 +160,7 @@ extraEnvFrom: []
 # ServiceMonitor configuration
 serviceMonitor:
   # -- If enabled, ServiceMonitor resources for Prometheus Operator are created
-  enabled: false
+  enabled: true
   # -- Alternative namespace for ServiceMonitor resources
   namespace: null
   # -- Namespace selector for ServiceMonitor resources
@@ -170,9 +170,9 @@ serviceMonitor:
   # -- Additional ServiceMonitor labels
   labels: {}
   # -- ServiceMonitor scrape interval
-  interval: null
+  interval: 60s
   # -- ServiceMonitor scrape timeout in Go duration format (e.g. 15s)
-  scrapeTimeout: null
+  scrapeTimeout: 10s
 
 # -- Configure additional ports and services. For each configured port, a corresponding service is created.
 # See values.yaml for details

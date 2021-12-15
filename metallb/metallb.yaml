@@ -115,7 +115,7 @@ controller:
   image:
     registry: docker.io
     repository: bitnami/metallb-controller
-    tag: 0.11.0-debian-10-r27
+    tag: 0.11.0-debian-10-r42
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -297,13 +297,13 @@ controller:
     serviceMonitor:
       ## @param controller.prometheus.serviceMonitor.enabled Specify if a servicemonitor will be deployed for prometheus-operator
       ##
-      enabled: false
+      enabled: true
       ## @param controller.prometheus.serviceMonitor.jobLabel Specify the jobLabel to use for the prometheus-operator
       ##
       jobLabel: "app.kubernetes.io/name"
       ## @param controller.prometheus.serviceMonitor.interval Scrape interval. If not set, the Prometheus default scrape interval is used
       ##
-      interval: ""
+      interval: "60s"
       ## @param controller.prometheus.serviceMonitor.metricRelabelings Specify additional relabeling of metrics
       ##
       metricRelabelings: []
@@ -326,7 +326,7 @@ speaker:
   image:
     registry: docker.io
     repository: bitnami/metallb-speaker
-    tag: 0.11.0-debian-10-r27
+    tag: 0.11.0-debian-10-r42
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -503,13 +503,13 @@ speaker:
     serviceMonitor:
       ## @param speaker.prometheus.serviceMonitor.enabled Enable support for Prometheus Operator
       ##
-      enabled: false
+      enabled: true
       ## @param speaker.prometheus.serviceMonitor.jobLabel Job label for scrape target
       ##
       jobLabel: "app.kubernetes.io/name"
       ## @param speaker.prometheus.serviceMonitor.interval Scrape interval. If not set, the Prometheus default scrape interval is used
       ##
-      interval: ""
+      interval: "60s"
       ## @param speaker.prometheus.serviceMonitor.metricRelabelings Specify additional relabeling of metrics
       ##
       metricRelabelings: []

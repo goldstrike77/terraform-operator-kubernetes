@@ -551,9 +551,9 @@ serviceMonitor:
   # -- Additional ServiceMonitor labels
   labels: {}
   # -- ServiceMonitor scrape interval
-  interval: null
+  interval: 60s
   # -- ServiceMonitor scrape timeout in Go duration format (e.g. 15s)
-  scrapeTimeout: null
+  scrapeTimeout: 10s
   # -- ServiceMonitor relabel configs to apply to samples before scraping
   # https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#relabelconfig
   relabelings: []

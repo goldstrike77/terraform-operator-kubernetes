@@ -451,7 +451,8 @@ controller:
     ##
     appProtocol: true
 
-    annotations: {}
+    annotations:
+      metallb.universe.tf/allow-shared-ip: shared
     labels: {}
     # clusterIP: ""
 
@@ -460,7 +461,7 @@ controller:
     ##
     externalIPs: []
 
-    # loadBalancerIP: ""
+    loadBalancerIP: "10.101.4.37"
     loadBalancerSourceRanges: []
 
     enableHttp: true
@@ -662,7 +663,7 @@ controller:
       # nodePort: ""
 
     serviceMonitor:
-      enabled: false
+      enabled: true
       additionalLabels: {}
       # The label to use to retrieve the job name from.
       # jobLabel: "app.kubernetes.io/name"
@@ -672,7 +673,7 @@ controller:
       # To scrape all, use the following:
       # namespaceSelector:
       #   any: true
-      scrapeInterval: 30s
+      scrapeInterval: 60s
       # honorLabels: true
       targetLabels: []
       metricRelabelings: []

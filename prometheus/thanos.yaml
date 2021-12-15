@@ -69,15 +69,34 @@ image:
 ## @param objstoreConfig The [objstore configuration](https://thanos.io/tip/thanos/storage.md/)
 ## Specify content for objstore.yml
 ##
-objstoreConfig: ""
+objstoreConfig: |-
+  type: s3
+  config:
+    bucket: thanos
+    endpoint: demo-prd-infra-monitor-minio-thanos.service.dc01.local:9002
+    access_key: C6ZNET5YBSNSJCVHOHWN
+    secret_key: mmXLvVJxxGcjYCRKUfId8axtHzCz4WlpzkEUJJus
+    insecure: true
+    http_config:
+      idle_conn_timeout: 2m
+      response_header_timeout: 5m
+      insecure_skip_verify: true
 ## @param indexCacheConfig The [index cache configuration](https://thanos.io/tip/components/store.md/)
 ## Specify content for index-cache.yml
 ##
-indexCacheConfig: ""
+indexCacheConfig: |-
+  type: IN-MEMORY
+  config:
+    max_size: 256MB
+    max_item_size: 0
 ## @param bucketCacheConfig The [bucket cache configuration](https://thanos.io/tip/components/store.md/)
 ## Specify content for bucket-cache.yml
 ##
-bucketCacheConfig: ""
+bucketCacheConfig: |-
+  type: IN-MEMORY
+  config:
+    max_size: 256MB
+    max_item_size: 0
 ## @param existingObjstoreSecret Secret with Objstore Configuration
 ## Note: This will override objstoreConfig
 ##
@@ -111,8 +130,8 @@ query:
   ##
   dnsDiscovery:
     enabled: true
-    sidecarsService: ""
-    sidecarsNamespace: ""
+    sidecarsService: kube-prometheus-prometheus-thanos
+    sidecarsNamespace: monitoring
   ## @param query.stores Statically configure store APIs to connect with Thanos Query
   ##
   stores: []
@@ -888,11 +907,11 @@ queryFrontend:
   service:
     ## @param queryFrontend.service.type Kubernetes service type
     ##
-    type: ClusterIP
+    type: LoadBalancer
     ## @param queryFrontend.service.ports.http Thanos Query Frontend service HTTP port
     ##
     ports:
-      http: 9090
+      http: 19090
     ## @param queryFrontend.service.nodePorts.http Specify the Thanos Query Frontend HTTP nodePort value for the LoadBalancer and NodePort service types
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
     ##
@@ -907,7 +926,7 @@ queryFrontend:
     ## Set the LoadBalancer service type to internal only
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: ""
+    loadBalancerIP: "10.101.4.37"
     ## @param queryFrontend.service.loadBalancerSourceRanges Address that are allowed when service is LoadBalancer
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ## e.g:
@@ -921,7 +940,8 @@ queryFrontend:
     externalTrafficPolicy: Cluster
     ## @param queryFrontend.service.annotations Annotations for Thanos Query Frontend service
     ##
-    annotations: {}
+    annotations:
+      metallb.universe.tf/allow-shared-ip: shared
     ## @param queryFrontend.service.extraPorts Extra ports to expose in the Thanos Query Frontend service
     ##
     extraPorts: []
@@ -1067,7 +1087,7 @@ queryFrontend:
 bucketweb:
   ## @param bucketweb.enabled Enable/disable Thanos Bucket Web component
   ##
-  enabled: false
+  enabled: true
   ## @param bucketweb.logLevel Thanos Bucket Web log level
   ##
   logLevel: info
@@ -1446,7 +1466,7 @@ bucketweb:
 compactor:
   ## @param compactor.enabled Enable/disable Thanos Compactor component
   ##
-  enabled: false
+  enabled: true
   ## @param compactor.logLevel Thanos Compactor log level
   ##
   logLevel: info
@@ -1460,7 +1480,7 @@ compactor:
   ##
   retentionResolutionRaw: 30d
   retentionResolution5m: 30d
-  retentionResolution1h: 10y
+  retentionResolution1h: 30d
   ## @param compactor.consistencyDelay Minimum age of fresh (non-compacted) blocks before they are being processed
   ##
   consistencyDelay: 30m
@@ -1811,7 +1831,7 @@ compactor:
     ## If undefined (the default) or set to null, no storageClassName spec is
     ## set, choosing the default provisioner.
     ##
-    storageClass: ""
+    storageClass: "nfs-client"
     ## @param compactor.persistence.accessModes PVC Access Modes for data volume
     ##
     accessModes:
@@ -1832,7 +1852,7 @@ compactor:
 storegateway:
   ## @param storegateway.enabled Enable/disable Thanos Store Gateway component
   ##
-  enabled: false
+  enabled: true
   ## @param storegateway.logLevel Thanos Store Gateway log level
   ##
   logLevel: info
@@ -2150,7 +2170,7 @@ storegateway:
     ## If undefined (the default) or set to null, no storageClassName spec is
     ## set, choosing the default provisioner.
     ##
-    storageClass: ""
+    storageClass: "nfs-client"
     ## @param storegateway.persistence.accessModes PVC Access Modes for data volume
     ##
     accessModes:
@@ -2420,7 +2440,8 @@ ruler:
     enabled: true
   ## @param ruler.alertmanagers Alert managers URLs array
   ##
-  alertmanagers: []
+  alertmanagers:
+    - http://kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
   ## @param ruler.alertmanagersConfig Alert managers configuration
   ## e.g:
   ## alertmanagersConfig:
@@ -3575,13 +3596,13 @@ receiveDistributor:
 metrics:
   ## @param metrics.enabled Enable the export of Prometheus metrics
   ##
-  enabled: false
+  enabled: true
   ## Prometheus Operator ServiceMonitor configuration
   ##
   serviceMonitor:
     ## @param metrics.serviceMonitor.enabled Specify if a ServiceMonitor will be deployed for Prometheus Operator
     ##
-    enabled: false
+    enabled: true
     ## @param metrics.serviceMonitor.namespace Namespace in which Prometheus is running
     ##
     namespace: ""
@@ -3595,12 +3616,12 @@ metrics:
     ## e.g:
     ## interval: 10s
     ##
-    interval: ""
+    interval: "60s"
     ## @param metrics.serviceMonitor.scrapeTimeout Timeout after which the scrape is ended
     ## e.g:
     ## scrapeTimeout: 10s
     ##
-    scrapeTimeout: ""
+    scrapeTimeout: "10s"
     ## @param metrics.serviceMonitor.metricRelabelings [array] Specify additional relabeling of metrics
     ##
     metricRelabelings: []

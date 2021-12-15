@@ -245,7 +245,7 @@ rbac:
 # ServiceMonitor configuration
 serviceMonitor:
   # -- If enabled, ServiceMonitor resources for Prometheus Operator are created
-  enabled: false
+  enabled: true
   # -- Alternative namespace for ServiceMonitor resources
   namespace: null
   # -- Namespace selector for ServiceMonitor resources
@@ -255,9 +255,9 @@ serviceMonitor:
   # -- Additional ServiceMonitor labels
   labels: {}
   # -- ServiceMonitor scrape interval
-  interval: null
+  interval: 60s
   # -- ServiceMonitor scrape timeout in Go duration format (e.g. 15s)
-  scrapeTimeout: null
+  scrapeTimeout: 10s
   # -- ServiceMonitor relabel configs to apply to samples before scraping
   # https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#relabelconfig
   relabelings: []
@@ -1124,7 +1124,7 @@ memcached:
 
 memcachedExporter:
   # -- Specifies whether the Memcached Exporter should be enabled
-  enabled: false
+  enabled: true
   image:
     # -- The Docker registry for the Memcached Exporter
     registry: docker.io

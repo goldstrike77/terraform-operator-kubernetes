@@ -165,7 +165,7 @@ operator:
     ## @param operator.serviceMonitor.interval Scrape interval (use by default, falling back to Prometheus' default)
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    interval: ""
+    interval: "60s"
     ## @param operator.serviceMonitor.metricRelabelings Metric relabeling
     ## ref: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
     ##
@@ -422,7 +422,7 @@ prometheus:
   service:
     ## @param prometheus.service.type Kubernetes service type
     ##
-    type: ClusterIP
+    type: LoadBalancer
     ## @param prometheus.service.port Prometheus service port
     ##
     port: 9090
@@ -440,7 +440,7 @@ prometheus:
     ## Set the LoadBalancer service type to internal only
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: ""
+    loadBalancerIP: "10.101.4.37"
     ## @param prometheus.service.loadBalancerSourceRanges Address that are allowed when service is `LoadBalancer`
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ##
@@ -464,7 +464,8 @@ prometheus:
     stickySessions: ""
     ## @param prometheus.service.annotations Additional annotations for Prometheus service  (this value is evaluated as a template)
     ##
-    annotations: {}
+    annotations:
+      metallb.universe.tf/allow-shared-ip: shared
   serviceMonitor:
     ## @param prometheus.serviceMonitor.enabled Creates a ServiceMonitor to monitor Prometheus itself
     ##
@@ -472,7 +473,7 @@ prometheus:
     ## @param prometheus.serviceMonitor.interval Scrape interval (use by default, falling back to Prometheus' default)
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    interval: ""
+    interval: "60s"
     ## @param prometheus.serviceMonitor.metricRelabelings Metric relabeling
     ## ref: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
     ##
@@ -488,23 +489,23 @@ prometheus:
   ingress:
     ## @param prometheus.ingress.enabled Enable ingress controller resource
     ##
-    enabled: true
+    enabled: false
     ## DEPRECATED: Use prometheus.ingress.annotations instead of prometheus.ingress.certManager
     ## certManager: false
     ##
 
     ## @param prometheus.ingress.pathType Ingress Path type
     ##
-    pathType: Prefix
+    pathType: ImplementationSpecific
     ## @param prometheus.ingress.apiVersion Override API Version (automatically detected if not set)
     ##
     apiVersion: ""
     ## @param prometheus.ingress.hostname Default host for the ingress resource
     ##
-    hostname: info.example.com
+    hostname: prometheus.local
     ## @param prometheus.ingress.path The Path to Prometheus. You may need to set this to '/*' in order to use this with ALB ingress controllers
     ##
-    path: /prometheus
+    path: /
     ## @param prometheus.ingress.annotations Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
     ## For a full list of possible ingress annotations, please see
     ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
@@ -517,12 +518,11 @@ prometheus:
     ##   cert-manager.io/cluster-issuer: cluster-issuer-name
     ##
     annotations: {}
-      
     ## @param prometheus.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
     ##
-    ingressClassName: "nginx"
+    ingressClassName: ""
     ## @param prometheus.ingress.tls Enable TLS configuration for the hostname defined at prometheus.ingress.hostname parameter
     ## TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.prometheus.ingress.hostname }}
     ## You can use the prometheus.ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it
@@ -573,7 +573,7 @@ prometheus:
   ## let Prometheus know what its external URL is so that it can properly create links
   ## externalUrl: https://prometheus.example.com
   ##
-  externalUrl: http://info.example.com/prometheus
+  externalUrl: ""
   ## @param prometheus.resources CPU/Memory resource requests/limits for node
   ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
   ##
@@ -741,10 +741,10 @@ prometheus:
   probeNamespaceSelector: {}
   ## @param prometheus.retention Metrics retention days
   ##
-  retention: 10d
+  retention: 5d
   ## @param prometheus.retentionSize Maximum size of metrics
   ##
-  retentionSize: ""
+  retentionSize: "512MB"
   ## @param prometheus.disableCompaction Disable the compaction of the Prometheus TSDB
   ## See https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheusspec
   ## ref: https://prometheus.io/docs/prometheus/latest/storage/#compaction
@@ -1197,7 +1197,7 @@ alertmanager:
   service:
     ## @param alertmanager.service.type Kubernetes service type
     ##
-    type: ClusterIP
+    type: LoadBalancer
     ## @param alertmanager.service.port Alertmanager service port
     ##
     port: 9093
@@ -1215,7 +1215,7 @@ alertmanager:
     ## @param alertmanager.service.loadBalancerIP `loadBalancerIP` if service type is `LoadBalancer`
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: ""
+    loadBalancerIP: "10.101.4.37"
     ## @param alertmanager.service.loadBalancerSourceRanges Address that are allowed when svc is `LoadBalancer`
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ## e.g:
@@ -1238,7 +1238,8 @@ alertmanager:
     stickySessions: ""
     ## @param alertmanager.service.annotations Additional annotations for Alertmanager service (this value is evaluated as a template)
     ##
-    annotations: {}
+    annotations:
+      metallb.universe.tf/allow-shared-ip: shared
   ## If true, create a serviceMonitor for alertmanager
   ##
   serviceMonitor:
@@ -1248,7 +1249,7 @@ alertmanager:
     ## @param alertmanager.serviceMonitor.interval Scrape interval. If not set, the Prometheus default scrape interval is used.
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    interval: ""
+    interval: "60s"
     ## @param alertmanager.serviceMonitor.metricRelabelings Metric relabeling
     ## ref: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
     ##
@@ -1264,7 +1265,7 @@ alertmanager:
   ingress:
     ## @param alertmanager.ingress.enabled Enable ingress controller resource
     ##
-    enabled: true
+    enabled: false
     ## DEPRECATED: Use alertmanager.ingress.annotations instead of alertmanager.ingress.certManager
     ## certManager: false
     ##
@@ -1277,10 +1278,10 @@ alertmanager:
     apiVersion: ""
     ## @param alertmanager.ingress.hostname Default host for the ingress resource
     ##
-    hostname: info.example.com
+    hostname: alertmanager.local
     ## @param alertmanager.ingress.path The Path to Alert Manager. You may need to set this to '/*' in order to use this with ALB ingress controllers.
     ##
-    path: /alertmanager/?(.*)
+    path: /
     ## @param alertmanager.ingress.annotations Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
     ## For a full list of possible ingress annotations, please see
     ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
@@ -1292,14 +1293,12 @@ alertmanager:
     ##   kubernetes.io/ingress.class: nginx
     ##   cert-manager.io/cluster-issuer: cluster-issuer-name
     ##
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /$1
-      nginx.ingress.kubernetes.io/use-regex: "true"    
+    annotations: {}
     ## @param alertmanager.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
     ##
-    ingressClassName: "nginx"
+    ingressClassName: ""
     ## @param alertmanager.ingress.tls Enable TLS configuration for the hostname defined at alertmanager.ingress.hostname parameter
     ## TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.alertmanager.ingress.hostname }}
     ## You can use the alertmanager.ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it
@@ -1591,7 +1590,7 @@ kubelet:
     ## @param kubelet.serviceMonitor.interval Scrape interval (use by default, falling back to Prometheus' default)
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    interval: ""
+    interval: "60s"
     ## @param kubelet.serviceMonitor.metricRelabelings Metric relabeling
     ## ref: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
     ##
@@ -1618,7 +1617,7 @@ kubeApiServer:
     ## @param kubeApiServer.serviceMonitor.interval Scrape interval. If not set, the Prometheus default scrape interval is used.
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    interval: ""
+    interval: "60s"
     ## @param kubeApiServer.serviceMonitor.metricRelabelings Metric relabeling
     ## ref: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
     ##
@@ -1632,7 +1631,7 @@ kubeApiServer:
 kubeControllerManager:
   ## @param kubeControllerManager.enabled Create a ServiceMonitor to scrape kube-controller-manager service
   ##
-  enabled: true
+  enabled: false
   ## @param kubeControllerManager.endpoints If your kube controller manager is not deployed as a pod, specify IPs it can be found on
   ## endpoints:
   ##  - 10.141.4.22
@@ -1661,7 +1660,7 @@ kubeControllerManager:
     ## @param kubeControllerManager.serviceMonitor.interval Scrape interval (use by default, falling back to Prometheus' default)
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    interval: ""
+    interval: "60s"
     ## @param kubeControllerManager.serviceMonitor.https Enable scraping kube-controller-manager over https
     ## Requires proper certs (not self-signed) and delegated authentication/authorization checks
     ##
@@ -1684,7 +1683,7 @@ kubeControllerManager:
 kubeScheduler:
   ## @param kubeScheduler.enabled Create a ServiceMonitor to scrape kube-scheduler service
   ##
-  enabled: true
+  enabled: false
   ## @param kubeScheduler.endpoints If your kube scheduler is not deployed as a pod, specify IPs it can be found on
   ## endpoints:
   ##  - 10.141.4.22
@@ -1712,7 +1711,7 @@ kubeScheduler:
   serviceMonitor:
     ## @param kubeScheduler.serviceMonitor.interval Scrape interval (use by default, falling back to Prometheus' default)
     ##
-    interval: ""
+    interval: "60s"
     ## @param kubeScheduler.serviceMonitor.https Enable scraping kube-scheduler over https
     ## Requires proper certs (not self-signed) and delegated authentication/authorization checks
     ##
@@ -1766,7 +1765,7 @@ coreDns:
   serviceMonitor:
     ## @param coreDns.serviceMonitor.interval Scrape interval. If not set, the Prometheus default scrape interval is used.
     ##
-    interval: ""
+    interval: "60s"
     ## @param coreDns.serviceMonitor.metricRelabelings Metric relabel configs to apply to samples before ingestion.
     ## metricRelabelings:
     ##  - action: keep
@@ -1789,7 +1788,7 @@ coreDns:
 kubeProxy:
   ## @param kubeProxy.enabled Create a ServiceMonitor to scrape the kube-proxy Service
   ##
-  enabled: true
+  enabled: false
   ## @param kubeProxy.endpoints If your kube-proxy is not deployed as a pod, specify IPs it can be found on
   ## endpoints:
   ##  - 10.141.4.22
@@ -1822,7 +1821,7 @@ kubeProxy:
     ## @param kubeProxy.serviceMonitor.interval Scrape interval (use by default, falling back to Prometheus' default)
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     ##
-    interval: ""
+    interval: "60s"
     ## @param kubeProxy.serviceMonitor.metricRelabelings Metric relabeling
     ## ref: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
     ##

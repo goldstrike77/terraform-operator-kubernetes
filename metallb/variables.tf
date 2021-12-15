@@ -9,7 +9,7 @@ variable "deploy_spec" {
       metallb = {
         repository = "https://charts.bitnami.com/bitnami"
         chart = "metallb"
-        version = "2.5.13"
+        version = "2.5.14"
         values = "metallb.yaml"
       }
     }
