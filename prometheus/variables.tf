@@ -15,7 +15,7 @@ variable "deploy_spec" {
       thanos = {
         repository = "https://charts.bitnami.com/bitnami"
         chart = "thanos"
-        version = "8.2.1"
+        version = "8.2.2"
         values = "thanos.yaml"
       }
     }
