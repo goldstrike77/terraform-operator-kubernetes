@@ -1,7 +1,7 @@
 variable "deploy_spec" {
   default = {
     namespace = {
-      name = "kube-system"
+      name = "default"
       annotations = {}
       labels = {}
     }

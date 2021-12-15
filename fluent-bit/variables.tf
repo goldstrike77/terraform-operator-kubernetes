@@ -7,11 +7,19 @@ variable "deploy_spec" {
     }
     helm = {
       fluent-bit = {
+        repository = "https://grafana.github.io/helm-charts"
+        chart = "fluent-bit"
+        version = "2.3.0"
+        values = "fluent-bit-grafana.yaml"
+      }
+/*
+      fluent-bit = {
         repository = "https://fluent.github.io/helm-charts"
         chart = "fluent-bit"
         version = "0.19.9"
-        values = "fluent-bit.yaml"
+        values = "fluent-bit-fluent.yaml"
       }
+*/
     }
   }
 }
