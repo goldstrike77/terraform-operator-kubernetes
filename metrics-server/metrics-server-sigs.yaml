@@ -5,7 +5,7 @@
 image:
   repository: registry.cn-hangzhou.aliyuncs.com/google_containers/metrics-server
   # Overrides the image tag whose default is v{{ .Chart.AppVersion }}
-  tag: "v0.4.5"
+  tag: "v0.5.2"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -76,10 +76,8 @@ podDisruptionBudget:
 defaultArgs:
   - --cert-dir=/tmp
   - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
-  - --kubelet-use-node-status-port
   - --metric-resolution=15s
   - --kubelet-insecure-tls
-  - --secure-port=4443
 
 args: []
 
@@ -110,7 +108,13 @@ service:
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "Metrics-server"
 
-resources: {}
+resources:
+  limits:
+    cpu: 200m
+    memory: 200Mi
+  requests:
+    cpu: 200m
+    memory: 200Mi
 
 extraVolumeMounts: []
 

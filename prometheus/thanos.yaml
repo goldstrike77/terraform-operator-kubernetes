@@ -76,7 +76,7 @@ objstoreConfig: |-
     endpoint: demo-prd-infra-monitor-minio-thanos.service.dc01.local:9002
     access_key: C6ZNET5YBSNSJCVHOHWN
     secret_key: mmXLvVJxxGcjYCRKUfId8axtHzCz4WlpzkEUJJus
-    insecure: true
+    insecure: false
     http_config:
       idle_conn_timeout: 2m
       response_header_timeout: 5m
