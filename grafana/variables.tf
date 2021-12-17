@@ -1,7 +1,7 @@
 variable "deploy_spec" {
   default = {
     namespace = {
-      name = "grafana"
+      name = "visualization"
       annotations = {}
       labels = {}
     }
@@ -9,7 +9,7 @@ variable "deploy_spec" {
       grafana = {
         repository = "https://grafana.github.io/helm-charts"
         chart = "grafana"
-        version = "6.17.10"
+        version = "6.20.1"
         values = "grafana.yaml"
       }
     }

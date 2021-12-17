@@ -47,7 +47,7 @@ operator:
   image:
     registry: docker.io
     repository: bitnami/prometheus-operator
-    tag: 0.52.1-debian-10-r0
+    tag: 0.53.0-debian-10-r0
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -357,7 +357,7 @@ prometheus:
   image:
     registry: docker.io
     repository: bitnami/prometheus
-    tag: 2.31.1-debian-10-r10
+    tag: 2.32.0-debian-10-r1
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
@@ -741,7 +741,7 @@ prometheus:
   probeNamespaceSelector: {}
   ## @param prometheus.retention Metrics retention days
   ##
-  retention: 5d
+  retention: 2d
   ## @param prometheus.retentionSize Maximum size of metrics
   ##
   retentionSize: "512MB"
@@ -749,7 +749,7 @@ prometheus:
   ## See https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheusspec
   ## ref: https://prometheus.io/docs/prometheus/latest/storage/#compaction
   ##
-  disableCompaction: false
+  disableCompaction: true
   ## @param prometheus.walCompression Enable compression of the write-ahead log using Snappy
   ##
   walCompression: false
@@ -758,7 +758,7 @@ prometheus:
   paused: false
   ## @param prometheus.replicaCount Number of Prometheus replicas desired
   ##
-  replicaCount: 1
+  replicaCount: 2
   ## @param prometheus.logLevel Log level for Prometheus
   ##
   logLevel: info
@@ -966,7 +966,9 @@ prometheus:
     ##    secretName: thanos-objstore-config
     ##    secretKey: thanos.yaml
     ##
-    objectStorageConfig: {}
+    objectStorageConfig:
+      secretName: thanos-objstore-secret
+      secretKey: objstore.yml
     ## ref: https://github.com/thanos-io/thanos/blob/main/docs/components/sidecar.md
     ## @param prometheus.thanos.extraVolumeMounts Additional volumeMounts from `prometheus.volumes` for thanos sidecar container
     ## extraVolumeMounts:
@@ -1137,7 +1139,7 @@ alertmanager:
   image:
     registry: docker.io
     repository: bitnami/alertmanager
-    tag: 0.23.0-debian-10-r81
+    tag: 0.23.0-debian-10-r109
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
@@ -1423,7 +1425,7 @@ alertmanager:
   externalConfig: false
   ## @param alertmanager.replicaCount Number of Alertmanager replicas desired
   ##
-  replicaCount: 1
+  replicaCount: 2
   ## Configure extra options for liveness probe
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
   ## @param alertmanager.livenessProbe.enabled Turn on and off liveness probe

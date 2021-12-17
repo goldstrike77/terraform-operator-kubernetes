@@ -25,7 +25,7 @@ export TERRAGRUNT_DOWNLOAD=/tmp
 #### Providers
 | Name | Version |
 |------|---------|
-| hashicorp/kubernetes | >= 2.6.0 |
+| hashicorp/kubernetes | >= 2.7.0 |
 | hashicorp/helm | >= 2.4.1 |
 
 #### Running

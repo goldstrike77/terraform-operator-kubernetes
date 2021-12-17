@@ -9,7 +9,7 @@ variable "deploy_spec" {
       kube-prometheus = {
         repository = "https://charts.bitnami.com/bitnami"
         chart = "kube-prometheus"
-        version = "6.5.0"
+        version = "6.5.2"
         values = "kube-prometheus.yaml"
       },
       thanos = {

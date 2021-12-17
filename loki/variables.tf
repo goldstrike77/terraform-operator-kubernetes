@@ -1,7 +1,7 @@
 variable "deploy_spec" {
   default = {
     namespace = {
-      name = "loki"
+      name = "logging"
       annotations = {}
       labels = {}
     }

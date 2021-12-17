@@ -87,7 +87,7 @@ objstoreConfig: |-
 indexCacheConfig: |-
   type: IN-MEMORY
   config:
-    max_size: 256MB
+    max_size: 1024MB
     max_item_size: 0
 ## @param bucketCacheConfig The [bucket cache configuration](https://thanos.io/tip/components/store.md/)
 ## Specify content for bucket-cache.yml
@@ -95,7 +95,7 @@ indexCacheConfig: |-
 bucketCacheConfig: |-
   type: IN-MEMORY
   config:
-    max_size: 256MB
+    max_size: 2048MB
     max_item_size: 0
 ## @param existingObjstoreSecret Secret with Objstore Configuration
 ## Note: This will override objstoreConfig
@@ -122,7 +122,7 @@ query:
   logFormat: logfmt
   ## @param query.replicaLabel Replica indicator(s) along which data is de-duplicated
   ##
-  replicaLabel: [replica]
+  replicaLabel: [prometheus_replica]
   ## Dynamically configure store APIs using DNS discovery
   ## @param query.dnsDiscovery.enabled Enable store APIs discovery via DNS
   ## @param query.dnsDiscovery.sidecarsService Sidecars service name to discover them using DNS discovery
@@ -167,7 +167,7 @@ query:
   args: []
   ## @param query.replicaCount Number of Thanos Query replicas to deploy
   ##
-  replicaCount: 1
+  replicaCount: 2
   ## @param query.updateStrategy.type Update strategy type for Thanos Query replicas
   ##
   updateStrategy:
@@ -711,7 +711,11 @@ queryFrontend:
   extraEnvVarsSecret: ""
   ## @param queryFrontend.extraFlags Extra Flags to passed to Thanos Query Frontend
   ##
-  extraFlags: []
+  extraFlags:
+    - "--query-range.split-interval=1h"
+    - "--query-range.max-retries-per-request=10"
+    - "--query-range.max-query-parallelism=32"
+    - "--query-range.partial-response"
   ## @param queryFrontend.command Override default container command (useful when using custom images)
   ##
   command: []
@@ -720,7 +724,7 @@ queryFrontend:
   args: []
   ## @param queryFrontend.replicaCount Number of Thanos Query Frontend replicas to deploy
   ##
-  replicaCount: 1
+  replicaCount: 2
   ## @param queryFrontend.updateStrategy.type Update strategy type for Thanos Query Frontend replicas
   ##
   updateStrategy:
@@ -1311,11 +1315,11 @@ bucketweb:
   service:
     ## @param bucketweb.service.type Kubernetes service type
     ##
-    type: ClusterIP
+    type: LoadBalancer
     ## @param bucketweb.service.ports.http Thanos Bucket Web service HTTP port
     ##
     ports:
-      http: 8080
+      http: 29090
     ## @param bucketweb.service.nodePorts.http Specify the Thanos Bucket Web HTTP nodePort value for the LoadBalancer and NodePort service types
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
     ##
@@ -1329,7 +1333,7 @@ bucketweb:
     ## @param bucketweb.service.loadBalancerIP Load balancer IP if service type is `LoadBalancer`
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: ""
+    loadBalancerIP: "10.101.4.37"
     ## @param bucketweb.service.loadBalancerSourceRanges Address that are allowed when service is LoadBalancer
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ##
@@ -1342,7 +1346,8 @@ bucketweb:
     externalTrafficPolicy: Cluster
     ## @param bucketweb.service.annotations Annotations for Thanos Bucket Web service
     ##
-    annotations: {}
+    annotations:
+      metallb.universe.tf/allow-shared-ip: shared
     ## @param bucketweb.service.extraPorts Extra ports to expose in the Thanos Bucket Web service
     ##
     extraPorts: []
@@ -1499,7 +1504,8 @@ compactor:
   extraEnvVarsSecret: ""
   ## @param compactor.extraFlags Extra Flags to passed to Thanos Compactor
   ##
-  extraFlags: []
+  extraFlags:
+    - "--compact.cleanup-interval=1h"
   ## @param compactor.command Override default container command (useful when using custom images)
   ##
   command: []
@@ -1911,7 +1917,10 @@ storegateway:
   extraEnvVarsSecret: ""
   ## @param storegateway.extraFlags Extra Flags to passed to Thanos Store Gateway
   ##
-  extraFlags: []
+  extraFlags:
+    - "--store.grpc.series-max-concurrency=32"
+    - "--block-sync-concurrency=32"
+    - "--store.grpc.series-sample-limit=50000"
   ## @param storegateway.command Override default container command (useful when using custom images)
   ##
   command: []
@@ -1920,7 +1929,7 @@ storegateway:
   args: []
   ## @param storegateway.replicaCount Number of Thanos Store Gateway replicas to deploy
   ##
-  replicaCount: 1
+  replicaCount: 2
   ## @param storegateway.updateStrategy.type Update strategy type for Thanos Store Gateway replicas
   ##
   updateStrategy:
@@ -3681,7 +3690,7 @@ volumePermissions:
   image:
     registry: docker.io
     repository: bitnami/bitnami-shell
-    tag: 10-debian-10-r242
+    tag: 10-debian-10-r278
     ## Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
     ##

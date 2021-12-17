@@ -70,7 +70,7 @@ livenessProbe:
 
 image:
   repository: grafana/grafana
-  tag: 8.2.5
+  tag: 8.3.3
   sha: ""
   pullPolicy: IfNotPresent
 
@@ -454,7 +454,12 @@ datasources:
     - name: Loki
       type: loki
       access: proxy
-      url: http://loki-distributed-querier.loki.svc.cluster.local:3100
+      url: http://loki-distributed-querier.logging.svc.cluster.local:3100
+      version: 1
+    - name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://thanos-query-frontend.monitoring.svc.cluster.local:19090
       version: 1
 #    - name: Prometheus
 #      type: prometheus
@@ -761,3 +766,32 @@ imageRenderer:
     requests:
       cpu: 50m
       memory: 50Mi
+
+networkPolicy:
+  ## @param networkPolicy.enabled Enable creation of NetworkPolicy resources. Only Ingress traffic is filtered for now.
+  ##
+  enabled: false
+  ## @param networkPolicy.allowExternal Don't require client label for connections
+  ## The Policy model to apply. When set to false, only pods with the correct
+  ## client label will have network access to  grafana port defined.
+  ## When true, grafana will accept connections from any source
+  ## (with the correct destination port).
+  ##
+  allowExternal: true
+  ## @param networkPolicy.explicitNamespacesSelector A Kubernetes LabelSelector to explicitly select namespaces from which traffic could be allowed
+  ## If explicitNamespacesSelector is missing or set to {}, only client Pods that are in the networkPolicy's namespace
+  ## and that match other criteria, the ones that have the good label, can reach the grafana.
+  ## But sometimes, we want the grafana to be accessible to clients from other namespaces, in this case, we can use this
+  ## LabelSelector to select these namespaces, note that the networkPolicy's namespace should also be explicitly added.
+  ##
+  ## Example:
+  ## explicitNamespacesSelector:
+  ##   matchLabels:
+  ##     role: frontend
+  ##   matchExpressions:
+  ##    - {key: role, operator: In, values: [frontend]}
+  ##
+  explicitNamespacesSelector: {}
+
+# Enable backward compatibility of kubernetes where version below 1.13 doesn't have the enableServiceLinks option
+enableKubeBackwardCompatibility: false
