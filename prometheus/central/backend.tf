@@ -2,7 +2,7 @@
 terraform {
   backend "consul" {
     address = "consul.service.dc01.local:8500"
-    path    = "tfstate/operator/nfs-client-provisioner/terraform.tfstate"
+    path    = "tfstate/operator/prometheus/central/terraform.tfstate"
     scheme  = "https"
   }
 }

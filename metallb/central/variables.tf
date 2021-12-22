@@ -1,7 +1,7 @@
 variable "deploy_spec" {
   default = {
     namespace = {
-      name = "metallb"
+      name = "metallb-system"
       annotations = {}
       labels = {}
     }
@@ -9,7 +9,7 @@ variable "deploy_spec" {
       metallb = {
         repository = "https://charts.bitnami.com/bitnami"
         chart = "metallb"
-        version = "2.5.14"
+        version = "2.5.16"
         values = "metallb.yaml"
       }
     }

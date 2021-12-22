@@ -1,7 +1,7 @@
 variable "deploy_spec" {
   default = {
     namespace = {
-      name = "default"
+      name = "nfs-client-provisioner"
       annotations = {}
       labels = {}
     }

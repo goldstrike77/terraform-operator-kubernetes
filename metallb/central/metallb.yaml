@@ -67,7 +67,7 @@ configInline:
     # will all share the same settings. Each range can be either a
     # CIDR prefix, or an explicit start-end range of IPs.
     addresses:
-    - 10.101.4.37
+    - 10.101.4.37-10.101.4.39
 
 ## RBAC creation for controller and speaker
 ##
@@ -115,7 +115,7 @@ controller:
   image:
     registry: docker.io
     repository: bitnami/metallb-controller
-    tag: 0.11.0-debian-10-r42
+    tag: 0.11.0-debian-10-r45
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -322,7 +322,7 @@ speaker:
   image:
     registry: docker.io
     repository: bitnami/metallb-speaker
-    tag: 0.11.0-debian-10-r42
+    tag: 0.11.0-debian-10-r45
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
