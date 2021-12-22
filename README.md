@@ -30,7 +30,6 @@ export TERRAGRUNT_DOWNLOAD=/tmp
 
 #### Running
 ```hcl
-kubectl config set-context kubernetes-admin@aks
 terragrunt run-all plan --terragrunt-parallelism 1
 terragrunt run-all apply --terragrunt-parallelism 1
 ```
