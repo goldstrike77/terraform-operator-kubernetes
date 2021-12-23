@@ -53,7 +53,7 @@ extraDeploy: []
 image:
   registry: docker.io
   repository: bitnami/thanos
-  tag: 0.23.1-scratch-r4
+  tag: 0.24.0-scratch-r0
   ## Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##
@@ -2442,7 +2442,7 @@ ruler:
   logFormat: logfmt
   ## @param ruler.replicaLabel Label to treat as a replica indicator along which data is de-duplicated
   ##
-  replicaLabel: replica
+  replicaLabel: prometheus_replica
   ## @param ruler.dnsDiscovery.enabled Dynamically configure Query APIs using DNS discovery
   ##
   dnsDiscovery:
@@ -2874,7 +2874,7 @@ ruler:
 receive:
   ## @param receive.enabled Enable/disable Thanos Receive component
   ##
-  enabled: false
+  enabled: true
   ## @param receive.mode Mode to run receiver in. Valid options are "standalone" or "dual-mode"
   ## ref: https://github.com/thanos-io/thanos/blob/release-0.22/docs/proposals-accepted/202012-receive-split.md
   ## Enables running the Thanos Receiver in dual mode. Setting this to "dual-mode" will create a deployment for
@@ -2888,7 +2888,7 @@ receive:
   logFormat: logfmt
   ## @param receive.tsdbRetention Thanos Receive TSDB retention period
   ##
-  tsdbRetention: 15d
+  tsdbRetention: 2d
   ## @param receive.replicationFactor Thanos Receive replication-factor
   ##
   replicationFactor: 1
@@ -2906,7 +2906,7 @@ receive:
   existingConfigmap: ""
   ## @param receive.replicaLabel Label to treat as a replica indicator along which data is de-duplicated
   ##
-  replicaLabel: replica
+  replicaLabel: prometheus_replica
   ## Thanos Receive parameters
   ## ref: https://github.com/thanos-io/thanos/blob/master/docs/components/receive.md#flags
   ##
@@ -3153,7 +3153,7 @@ receive:
   service:
     ## @param receive.service.type Kubernetes service type
     ##
-    type: ClusterIP
+    type: LoadBalancer
     ## @param receive.service.ports.http Thanos Ruler service HTTP port
     ## @param receive.service.ports.grpc Thanos Ruler service GRPC port
     ## @param receive.service.ports.remote Thanos Ruler service remote port
@@ -3179,7 +3179,7 @@ receive:
     ## @param receive.service.loadBalancerIP Load balancer IP if service type is `LoadBalancer`
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: ""
+    loadBalancerIP: "10.101.4.37"
     ## @param receive.service.loadBalancerSourceRanges Addresses that are allowed when service is LoadBalancer
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ## e.g:
@@ -3193,7 +3193,8 @@ receive:
     externalTrafficPolicy: Cluster
     ## @param receive.service.annotations Annotations for Thanos Receive service
     ##
-    annotations: {}
+    annotations:
+      metallb.universe.tf/allow-shared-ip: shared
     ## @param receive.service.extraPorts Extra ports to expose in the Thanos Receive service
     ##
     extraPorts: []
@@ -3248,7 +3249,7 @@ receive:
     ## If undefined (the default) or set to null, no storageClassName spec is
     ## set, choosing the default provisioner.
     ##
-    storageClass: ""
+    storageClass: "nfs-client"
     ## @param receive.persistence.accessModes PVC Access Modes for data volume
     ##
     accessModes:
@@ -3356,7 +3357,7 @@ receiveDistributor:
   logFormat: logfmt
   ## @param receiveDistributor.replicaLabel Label to treat as a replica indicator along which data is de-duplicated
   ##
-  replicaLabel: replica
+  replicaLabel: prometheus_replica
   ## @param receiveDistributor.extraEnvVars Extra environment variables for Thanos Receive Distributor container
   ## e.g:
   ## extraEnvVars:
@@ -3690,7 +3691,7 @@ volumePermissions:
   image:
     registry: docker.io
     repository: bitnami/bitnami-shell
-    tag: 10-debian-10-r278
+    tag: 10-debian-10-r287
     ## Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
     ##

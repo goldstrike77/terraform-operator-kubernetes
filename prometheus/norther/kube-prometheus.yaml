@@ -422,7 +422,7 @@ prometheus:
   service:
     ## @param prometheus.service.type Kubernetes service type
     ##
-    type: LoadBalancer
+    type: ClusterIP
     ## @param prometheus.service.port Prometheus service port
     ##
     port: 9090
@@ -440,7 +440,7 @@ prometheus:
     ## Set the LoadBalancer service type to internal only
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: "10.101.4.37"
+    loadBalancerIP: ""
     ## @param prometheus.service.loadBalancerSourceRanges Address that are allowed when service is `LoadBalancer`
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ##
@@ -464,8 +464,7 @@ prometheus:
     stickySessions: ""
     ## @param prometheus.service.annotations Additional annotations for Prometheus service  (this value is evaluated as a template)
     ##
-    annotations:
-      metallb.universe.tf/allow-shared-ip: shared
+    annotations: {}
   serviceMonitor:
     ## @param prometheus.serviceMonitor.enabled Creates a ServiceMonitor to monitor Prometheus itself
     ##
@@ -674,11 +673,19 @@ prometheus:
   ## @param prometheus.alertingEndpoints Alertmanagers to which alerts will be sent
   ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#alertmanagerendpoints
   ##
-  alertingEndpoints: []
+  alertingEndpoints:
+    - name: "10.101.4.37:9093"
+      namespace: ""
+      port: http
+      scheme: http
+      pathPrefix: ""
+      tlsConfig: {}
+      bearerTokenFile: ""
+      apiVersion: v2
   ## @param prometheus.externalLabels External labels to add to any time series or alerts when communicating with external systems
   ##
   externalLabels:
-    cluster: central
+    cluster: norther
   ## @param prometheus.replicaExternalLabelName Name of the external label used to denote replica name
   ##
   replicaExternalLabelName: ""
@@ -787,7 +794,8 @@ prometheus:
   ## remoteWrite:
   ## - url: http://remote1/push
   ##
-  remoteWrite: []
+  remoteWrite:
+  - url: http://10.101.4.37:19291/api/v1/receive
   ## @param prometheus.storageSpec Prometheus StorageSpec for persistent data
   ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/storage.md
   ##
@@ -911,7 +919,7 @@ prometheus:
   thanos:
     ## @param prometheus.thanos.create Create a Thanos sidecar container
     ##
-    create: true
+    create: false
     ## Bitnami Thanos image
     ## ref: https://hub.docker.com/r/bitnami/thanos/tags/
     ## @param prometheus.thanos.image.registry Thanos image registry
@@ -1129,7 +1137,7 @@ prometheus:
 alertmanager:
   ## @param alertmanager.enabled Deploy Alertmanager to the cluster
   ##
-  enabled: true
+  enabled: false
   ## Bitnami Alertmanager image version
   ## ref: https://hub.docker.com/r/bitnami/prometheus-operator/tags/
   ## @param alertmanager.image.registry Prometheus image registry
@@ -1200,7 +1208,7 @@ alertmanager:
   service:
     ## @param alertmanager.service.type Kubernetes service type
     ##
-    type: LoadBalancer
+    type: ClusterIP
     ## @param alertmanager.service.port Alertmanager service port
     ##
     port: 9093
@@ -1218,7 +1226,7 @@ alertmanager:
     ## @param alertmanager.service.loadBalancerIP `loadBalancerIP` if service type is `LoadBalancer`
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: "10.101.4.37"
+    loadBalancerIP: ""
     ## @param alertmanager.service.loadBalancerSourceRanges Address that are allowed when svc is `LoadBalancer`
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ## e.g:
@@ -1241,8 +1249,7 @@ alertmanager:
     stickySessions: ""
     ## @param alertmanager.service.annotations Additional annotations for Alertmanager service (this value is evaluated as a template)
     ##
-    annotations:
-      metallb.universe.tf/allow-shared-ip: shared
+    annotations: {}
   ## If true, create a serviceMonitor for alertmanager
   ##
   serviceMonitor:
@@ -1494,14 +1501,14 @@ alertmanager:
     ## @param alertmanager.persistence.enabled Use PVCs to persist data. If the storageSpec is provided this will not take effect.
     ## If you want to use this configuration make sure the storageSpec is not provided.
     ##
-    enabled: true
+    enabled: false
     ## @param alertmanager.persistence.storageClass Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
     ## If undefined (the default) or set to null, no storageClassName spec is
     ## set, choosing the default provisioner.
     ##
-    storageClass: "nfs-client"
+    storageClass: ""
     ## @param alertmanager.persistence.accessModes Persistent Volume Access Modes
     ##
     accessModes:
