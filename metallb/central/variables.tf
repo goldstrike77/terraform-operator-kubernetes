@@ -8,7 +8,7 @@ variable "deploy_spec" {
     helm = {
       metallb = {
         repository = "https://charts.bitnami.com/bitnami"
-        chart = "metallb"
+        chart = "../../_chart/metallb-2.5.16.tgz"
         version = "2.5.16"
         values = "metallb.yaml"
       }

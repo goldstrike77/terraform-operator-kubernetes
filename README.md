@@ -15,8 +15,8 @@ export CONSUL_HTTP_TOKEN=6c397954-c993-4710-95bd-ce4ae34186a6
 export TERRAGRUNT_DOWNLOAD=/tmp
 ```
 
+#### By default, HashiCorp Terraform using kubeconfig access and authentication file named config in the $HOME/.kube directory.
 #### Kubernetes cluster as below
-#### By default, HashiCorp Terraform using kubeconfig authentication file named config in the $HOME/.kube directory.
 ```hcl
 CURRENT   NAME                       CLUSTER   AUTHINFO
           kubernetes-admin@central   central   central
@@ -33,7 +33,7 @@ CURRENT   NAME                       CLUSTER   AUTHINFO
 #### Providers
 | Name | Version |
 |------|---------|
-| hashicorp/kubernetes | >= 2.7.0 |
+| hashicorp/kubernetes | >= 2.7.1 |
 | hashicorp/helm | >= 2.4.1 |
 
 #### Running
