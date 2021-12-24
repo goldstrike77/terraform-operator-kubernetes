@@ -1,4 +1,4 @@
-# Generate an provider block.
+# 生成提供者依赖配置。
 generate "provider" {
   path = "provider.tf"
   if_exists = "overwrite_terragrunt"
@@ -19,7 +19,7 @@ terraform {
 EOF
 }
 
-# Configure Terragrunt to automatically store tfstate files in an Consul Key/Value.
+# 仍然必须指定每个工作目录中使用的状态文件后端，但不需要将配置一次又一次地复制和粘贴到每个工作目录，Terragrunt会在运行时根据模板和目录结构正确识别。
 remote_state {
   backend = "consul"
   config = {
@@ -27,25 +27,24 @@ remote_state {
     scheme = "https"
     path = "tfstate/operator/${path_relative_to_include()}/terraform.tfstate"
   }
-  generate = {
-    path = "backend.tf"
-    if_exists = "overwrite_terragrunt"
-  }
 }
 
-# Generate module configuration.
+# 生成工作目录模块配置集。
 generate "main" {
   path = "main.tf"
   if_exists = "overwrite_terragrunt"
   contents = <<EOF
+terraform {
+  backend "consul" {}
+}
 provider kubernetes {
   config_path = "~/.kube/config"
-  config_context = "kubernetes-admin-${basename(get_terragrunt_dir())}"
+  config_context = "kubernetes-admin@${basename(get_terragrunt_dir())}"
 }
 provider helm {
   kubernetes {
     config_path = "~/.kube/config"
-    config_context = "kubernetes-admin-${basename(get_terragrunt_dir())}"
+    config_context = "kubernetes-admin@${basename(get_terragrunt_dir())}"
   }
 }
 module "namespace" {

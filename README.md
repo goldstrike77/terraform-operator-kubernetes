@@ -8,12 +8,20 @@
 
 #### Environment variables
 ```hcl
-export TF_DATA_DIR="/home/oper/.terraform_k8s"
-export KUBE_CONFIG_PATH=/home/oper/.kube/config
+export TF_DATA_DIR="$HOME/.terraform_k8s"
 export CONSUL_HTTP_SSL_VERIFY=false
 export CONSUL_HTTP_SSL=true
 export CONSUL_HTTP_TOKEN=6c397954-c993-4710-95bd-ce4ae34186a6
 export TERRAGRUNT_DOWNLOAD=/tmp
+```
+
+#### Kubernetes cluster as below
+#### By default, HashiCorp Terraform using kubeconfig authentication file named config in the $HOME/.kube directory.
+```hcl
+CURRENT   NAME                       CLUSTER   AUTHINFO
+          kubernetes-admin@central   central   central
+          kubernetes-admin@norther   norther   norther
+          kubernetes-admin@souther   souther   souther
 ```
 
 #### Requirements
