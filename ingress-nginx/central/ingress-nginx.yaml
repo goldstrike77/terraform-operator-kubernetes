@@ -36,6 +36,7 @@ controller:
   # Will add custom configuration options to Nginx https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
   config:
     compute-full-forwarded-for: "true"
+    force-ssl-redirect: "true"
     forwarded-for-header: X-Forwarded-For
     keep-alive-requests: "2048"
     max-worker-connections: 20480
@@ -55,7 +56,11 @@ controller:
   proxySetHeaders: {}
 
   # Will add custom headers before sending response traffic to the client according to: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#add-headers
-  addHeaders: {}
+  addHeaders:
+    Strict-Transport-Security: "max-age=63072000; includeSubDomains; preload"
+    X-Frame-Options: DENY
+    X-Content-Type-Options: nosniff
+    X-XSS-Protection: "1; mode=block"
 
   # Optionally customize the pod dnsConfig.
   dnsConfig: {}
@@ -328,7 +333,6 @@ controller:
     timeoutSeconds: 1
     successThreshold: 1
     failureThreshold: 3
-
 
   # Path of the health check endpoint. All requests received on the port defined by
   # the healthz-port parameter are forwarded internally to this path.

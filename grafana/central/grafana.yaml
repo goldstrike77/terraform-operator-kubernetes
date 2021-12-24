@@ -440,9 +440,9 @@ extraVolumeMounts: []
 
 ## Pass the plugins you want installed as a list.
 ##
-plugins: []
-  # - digrich-bubblechart-panel
-  # - grafana-clock-panel
+plugins:
+  - grafana-piechart-panel
+  - camptocamp-prometheus-alertmanager-datasource
 
 ## Configure grafana datasources
 ## ref: http://docs.grafana.org/administration/provisioning/#datasources
@@ -451,29 +451,26 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-    - name: Loki
+    - name: DS_LOKI
       type: loki
       access: proxy
       url: http://loki-distributed-querier.logging.svc.cluster.local:3100
       version: 1
-    - name: Prometheus
+    - name: DS_PROMETHEUS
       type: prometheus
       access: proxy
       url: http://thanos-query-frontend.monitoring.svc.cluster.local:19090
       version: 1
-#    - name: Prometheus
-#      type: prometheus
-#      url: http://prometheus-prometheus-server
-#      access: proxy
-#      isDefault: true
-#    - name: CloudWatch
-#      type: cloudwatch
-#      access: proxy
-#      uid: cloudwatch
-#      editable: false
-#      jsonData:
-#        authType: default
-#        defaultRegion: us-east-1
+    - name: DS_ALERTMANAGER
+      type: camptocamp-prometheus-alertmanager-datasource
+      access: proxy
+      url: http://kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
+      version: 1
+      jsonData:
+        severity_critical: p1
+        severity_high: p2
+        severity_warning: p3
+        severity_info: p4
 
 ## Configure notifiers
 ## ref: http://docs.grafana.org/administration/provisioning/#alert-notification-channels
