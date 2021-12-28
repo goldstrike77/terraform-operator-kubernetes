@@ -58,7 +58,8 @@ ingress:
   # options: true, false
   enabled: true
   includeDefaultExtraAnnotations: true
-  extraAnnotations: {}
+  extraAnnotations:
+    kubernetes.io/ingress.class: nginx
 
   # configurationSnippet - Add additional Nginx configuration. This example statically sets a header on the ingress.
   # configurationSnippet: |
@@ -66,7 +67,7 @@ ingress:
 
   tls:
     # options: rancher, letsEncrypt, secret
-    source: rancher
+    source: secret
     secretName: tls-rancher-ingress
 
 ### LetsEncrypt config ###
@@ -80,7 +81,7 @@ letsEncrypt:
     class: ""
 # If you are using certs signed by a private CA set to 'true' and set the 'tls-ca'
 # in the 'rancher-system' namespace. See the README.md for details
-privateCA: false
+privateCA: true
 
 # http[s] proxy server passed into rancher server.
 # proxy: http://<username>@<password>:<url>:<port>
@@ -101,7 +102,7 @@ rancherImage: rancher/rancher
 
 # Number of Rancher server replicas. Setting to negative number will dynamically between 0 and the abs(replicas) based on available nodes.
 # of available nodes in the cluster
-replicas: 3
+replicas: 2
 
 # Set pod resource requests/limits for Rancher.
 resources: {}
@@ -143,7 +144,7 @@ postDelete:
   enabled: true
   image:
     repository: rancher/rancher-webhook
-    tag: v0.2.1
+    tag: v0.2.3
   namespaceList:
     - cattle-fleet-system
     - cattle-system

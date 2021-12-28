@@ -9,7 +9,7 @@ variable "deploy_spec" {
       rancher = {
         repository = "https://releases.rancher.com/server-charts/stable"
         chart = "rancher"
-        version = "2.6.2"
+        version = "2.6.3"
         values = "rancher.yaml"
       }
     }
