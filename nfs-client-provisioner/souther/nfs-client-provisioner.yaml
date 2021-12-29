@@ -6,12 +6,12 @@ replicaCount: 2
 strategyType: Recreate
 
 image:
-  repository: quay.io/external_storage/nfs-client-provisioner
+  repository: registry.cn-hangzhou.aliyuncs.com/kubeapps/quay-nfs-client-provisioner
   tag: v3.1.0-k8s1.11
   pullPolicy: IfNotPresent
 
 nfs:
-  server: clu-p-sou-mon01.node.dc01.local
+  server: clu-p-cen-oss01.node.dc01.local
   path: /data/nfs
   mountOptions:
 
