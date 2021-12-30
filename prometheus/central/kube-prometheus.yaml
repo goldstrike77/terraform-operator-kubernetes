@@ -259,7 +259,7 @@ operator:
     successThreshold: 1
   ## @param operator.logLevel Log level for Prometheus Operator
   ##
-  logLevel: info
+  logLevel: warn
   ## @param operator.logFormat Log format for Prometheus Operator
   ##
   logFormat: logfmt
@@ -762,7 +762,7 @@ prometheus:
   replicaCount: 2
   ## @param prometheus.logLevel Log level for Prometheus
   ##
-  logLevel: info
+  logLevel: warn
   ## @param prometheus.logFormat Log format for Prometheus
   ##
   logFormat: logfmt
@@ -1465,7 +1465,7 @@ alertmanager:
     successThreshold: 1
   ## @param alertmanager.logLevel Log level for Alertmanager
   ##
-  logLevel: info
+  logLevel: warn
   ## @param alertmanager.logFormat Log format for Alertmanager
   ##
   logFormat: logfmt

@@ -70,7 +70,7 @@ hostAliases: []
 ## @param config.route.routes [array] Array containing event route configuration
 ##
 config:
-  logLevel: info
+  logLevel: warn
   logFormat: pretty
   receivers:
     - name: "dump"

@@ -41,6 +41,8 @@ controller:
     keep-alive-requests: "2048"
     max-worker-connections: 20480
     real_ip_header: X-Forwarded-For
+    ssl_protocols: "TLSv1.2 TLSv1.3"
+    ssl_ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
     upstream-keepalive-connections: "1024"
     use-forwarded-headers: "true"
     use-geoip: "false"
@@ -50,7 +52,8 @@ controller:
 
   ## Annotations to be added to the controller config configuration configmap
   ##
-  configAnnotations: {}
+  configAnnotations:
+    nginx.ingress.kubernetes.io/auth-tls-secret: "ingress-nginx/internal-ca"
 
   # Will add custom headers before sending traffic to backends according to https://github.com/kubernetes/ingress-nginx/tree/main/docs/examples/customization/custom-headers
   proxySetHeaders: {}
@@ -183,7 +186,8 @@ controller:
   ## E.g. to specify the default SSL certificate you can use
   ## extraArgs:
   ##   default-ssl-certificate: "<namespace>/<secret_name>"
-  extraArgs: {}
+  extraArgs:
+    default-ssl-certificate: "ingress-nginx/default-tls-secret"
 
   ## Additional environment variables to set
   extraEnvs: []
@@ -220,7 +224,6 @@ controller:
   # minReadySeconds to avoid killing pods before we are ready
   ##
   minReadySeconds: 0
-
 
   ## Node tolerations for server scheduling to nodes with taints
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/

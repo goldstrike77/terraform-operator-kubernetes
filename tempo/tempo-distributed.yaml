@@ -462,7 +462,7 @@ server:
   httpListenPort: 3100
 
   # -- Log level. Can be set to trace, debug, info (default), warn error, fatal, panic
-  logLevel: info
+  logLevel: warn
 
   # -- Log format. Can be set to logfmt (default) or json.
   logFormat: logfmt

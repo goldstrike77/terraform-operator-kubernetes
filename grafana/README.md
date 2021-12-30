@@ -4,4 +4,4 @@ kubectl get secret --namespace visualization grafana -o jsonpath="{.data.admin-p
 ```
 
 #### Reference
-- [grafana](https://github.com/grafana/helm-charts/blob/f8f4935a28/charts/grafana/README.md)
+- [grafana](https://github.com/grafana/helm-charts/blob/main/charts/grafana/README.md)

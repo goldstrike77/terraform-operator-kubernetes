@@ -73,9 +73,9 @@ objstoreConfig: |-
   type: s3
   config:
     bucket: thanos
-    endpoint: demo-prd-cluster-central-minio-thanos.service.dc01.local:9002
-    access_key: ID7AFJNC2R4ACF02SVQ7
-    secret_key: OG0XuZ2C0lrEcC2rUQ0PmW0Q06zbOiMGxH95IllQ
+    endpoint: demo-prd-cluster-storage-minio-thanos.service.dc01.local:9002
+    access_key: 0S7JIV3GMSKALH5UESWG
+    secret_key: XbWIJvQVT14QN97i6KZqYY8BPIUz6FlE5ifh4Khx
     insecure: false
     http_config:
       idle_conn_timeout: 2m
@@ -116,7 +116,7 @@ query:
   enabled: true
   ## @param query.logLevel Thanos Query log level
   ##
-  logLevel: info
+  logLevel: warn
   ## @param query.logFormat Thanos Query log format
   ##
   logFormat: logfmt
@@ -684,7 +684,7 @@ queryFrontend:
   enabled: true
   ## @param queryFrontend.logLevel Thanos Query Frontend log level
   ##
-  logLevel: info
+  logLevel: warn
   ## @param queryFrontend.logFormat Thanos Query Frontend log format
   ##
   logFormat: logfmt
@@ -1094,7 +1094,7 @@ bucketweb:
   enabled: true
   ## @param bucketweb.logLevel Thanos Bucket Web log level
   ##
-  logLevel: info
+  logLevel: warn
   ## @param bucketweb.logFormat Thanos Bucket Web log format
   ##
   logFormat: logfmt
@@ -1474,7 +1474,7 @@ compactor:
   enabled: true
   ## @param compactor.logLevel Thanos Compactor log level
   ##
-  logLevel: info
+  logLevel: warn
   ## @param compactor.logFormat Thanos Compactor log format
   ##
   logFormat: logfmt
@@ -1861,7 +1861,7 @@ storegateway:
   enabled: true
   ## @param storegateway.logLevel Thanos Store Gateway log level
   ##
-  logLevel: info
+  logLevel: warn
   ## @param storegateway.logFormat Thanos Store Gateway log format
   ##
   logFormat: logfmt
@@ -2436,7 +2436,7 @@ ruler:
   enabled: false
   ## @param ruler.logLevel Thanos Ruler log level
   ##
-  logLevel: info
+  logLevel: warn
   ## @param ruler.logFormat Thanos Ruler log format
   ##
   logFormat: logfmt
@@ -2882,7 +2882,7 @@ receive:
   mode: standalone
   ## @param receive.logLevel Thanos Receive log level
   ##
-  logLevel: info
+  logLevel: warn
   ## @param receive.logFormat Thanos Receive log format
   ##
   logFormat: logfmt
@@ -3351,7 +3351,7 @@ receiveDistributor:
   enabled: false
   ## @param receiveDistributor.logLevel Thanos Receive Distributor log level
   ##
-  logLevel: info
+  logLevel: warn
   ## @param receiveDistributor.logFormat Thanos Receive Distributor log format
   ##
   logFormat: logfmt

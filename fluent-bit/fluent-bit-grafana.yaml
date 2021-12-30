@@ -11,7 +11,7 @@ config:
   tenantID: '""'
   batchWait: 1
   batchSize: 1048576
-  loglevel: info
+  logLevel: warn
   lineFormat: json
   k8sLoggingExclude: "Off"
   k8sLoggingParser: "Off"
