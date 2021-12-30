@@ -46,7 +46,7 @@ image:
   ##
   registry: docker.io
   repository: bitnami/kubernetes-event-exporter
-  tag: 0.11.0-debian-10-r0
+  tag: 0.11.0-debian-10-r32
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -70,7 +70,7 @@ hostAliases: []
 ## @param config.route.routes [array] Array containing event route configuration
 ##
 config:
-  logLevel: warn
+  logLevel: info
   logFormat: pretty
   receivers:
     - name: "dump"
@@ -141,16 +141,12 @@ containerSecurityContext:
 ## @param resources.requests Specify resource requests which the container needs to spawn.
 ##
 resources:
-  ## Example:
-  ## limits:
-  ##    cpu: 400m
-  ##    memory: 250Mi
-  limits: {}
-  ## Examples:
-  ## requests:
-  ##    cpu: 100m
-  ##    memory: 25Mi
-  requests: {}
+  limits:
+    cpu: 400m
+    memory: 250Mi
+  requests:
+    cpu: 100m
+    memory: 25Mi
 ## @param nodeSelector Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
 ##

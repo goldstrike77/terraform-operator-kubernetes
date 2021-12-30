@@ -1561,7 +1561,7 @@ exporters:
   node-exporter:
     ## @param exporters.node-exporter.enabled Enable node-exporter
     ##
-    enabled: false
+    enabled: true
   kube-state-metrics:
     ## @param exporters.kube-state-metrics.enabled Enable kube-state-metrics
     ##
@@ -1569,6 +1569,18 @@ exporters:
 ## @param node-exporter [object] Node Exporter deployment configuration
 ##
 node-exporter:
+  nodeSelector:
+    "kubernetes.io/os": linux
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
   service:
     labels:
       jobLabel: node-exporter
