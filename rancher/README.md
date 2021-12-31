@@ -9,3 +9,6 @@ kubectl get validatingwebhookconfiguration rancher.cattle.io -o yaml > vwc-ranch
 kubectl get mutatingwebhookconfiguration rancher.cattle.io -o yaml > mwc-rancher.cattle.io.yaml
 kubectl delete validatingwebhookconfiguration rancher.cattle.io
 kubectl delete mutatingwebhookconfiguration rancher.cattle.io
+
+#### Reference
+- [rancher](https://rancher.com/docs/rancher/v2.6/en/installation/install-rancher-on-k8s)
