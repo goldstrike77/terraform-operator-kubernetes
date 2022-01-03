@@ -114,7 +114,7 @@ resources: {}
 # - external
 tls: ingress
 
-systemDefaultRegistry: ""
+systemDefaultRegistry: "registry.cn-hangzhou.aliyuncs.com"
 
 # Set to use the packaged system charts
 useBundledSystemChart: false
