@@ -1501,7 +1501,7 @@ alertmanager:
     ## If undefined (the default) or set to null, no storageClassName spec is
     ## set, choosing the default provisioner.
     ##
-    storageClass: "nfs-client"
+    storageClass: "longhorn"
     ## @param alertmanager.persistence.accessModes Persistent Volume Access Modes
     ##
     accessModes:

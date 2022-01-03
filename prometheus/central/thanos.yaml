@@ -1837,7 +1837,7 @@ compactor:
     ## If undefined (the default) or set to null, no storageClassName spec is
     ## set, choosing the default provisioner.
     ##
-    storageClass: "nfs-client"
+    storageClass: "longhorn"
     ## @param compactor.persistence.accessModes PVC Access Modes for data volume
     ##
     accessModes:
@@ -2179,7 +2179,7 @@ storegateway:
     ## If undefined (the default) or set to null, no storageClassName spec is
     ## set, choosing the default provisioner.
     ##
-    storageClass: "nfs-client"
+    storageClass: "longhorn"
     ## @param storegateway.persistence.accessModes PVC Access Modes for data volume
     ##
     accessModes:
@@ -2891,7 +2891,7 @@ receive:
   tsdbRetention: 2d
   ## @param receive.replicationFactor Thanos Receive replication-factor
   ##
-  replicationFactor: 1
+  replicationFactor: 2
   ## @param receive.config Receive Hashring configuration
   ## Note: json formatted string and yaml allowed.
   ## e.g:
@@ -2960,7 +2960,7 @@ receive:
   args: []
   ## @param receive.replicaCount Number of Thanos Receive replicas to deploy
   ##
-  replicaCount: 1
+  replicaCount: 2
   ## @param receive.updateStrategy.type Update strategy type for Thanos Receive replicas
   ##
   updateStrategy:
@@ -3249,7 +3249,7 @@ receive:
     ## If undefined (the default) or set to null, no storageClassName spec is
     ## set, choosing the default provisioner.
     ##
-    storageClass: "nfs-client"
+    storageClass: "longhorn"
     ## @param receive.persistence.accessModes PVC Access Modes for data volume
     ##
     accessModes:

@@ -124,7 +124,13 @@ privateRegistry:
   registrySecret: null
   registryUrl: ''
   registryUser: admin
-resources: {}
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 service:
   manager:
     nodePort: ''
