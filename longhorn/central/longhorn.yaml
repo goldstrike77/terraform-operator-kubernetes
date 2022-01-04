@@ -32,7 +32,7 @@ defaultSettings:
   mkfsExt4Parameters: null
   nodeDownPodDeletionPolicy: null
   priorityClass: null
-  replicaAutoBalance: null
+  replicaAutoBalance: best-effort
   replicaReplenishmentWaitInterval: null
   replicaSoftAntiAffinity: null
   replicaZoneSoftAntiAffinity: null

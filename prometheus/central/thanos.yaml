@@ -2891,7 +2891,7 @@ receive:
   tsdbRetention: 2d
   ## @param receive.replicationFactor Thanos Receive replication-factor
   ##
-  replicationFactor: 2
+  replicationFactor: 1
   ## @param receive.config Receive Hashring configuration
   ## Note: json formatted string and yaml allowed.
   ## e.g:

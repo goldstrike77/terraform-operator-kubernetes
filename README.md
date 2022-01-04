@@ -27,7 +27,7 @@ CURRENT   NAME                       CLUSTER   AUTHINFO
 #### Requirements
 | Name | Version |
 |------|---------|
-| [terraform](https://github.com/hashicorp/terraform) | >= 0.13.5 |
+| [terraform](https://github.com/hashicorp/terraform) | >= 0.14.11 |
 | [terragrunt](https://github.com/gruntwork-io/terragrunt) | >= 0.35.13 |
 
 #### Providers
