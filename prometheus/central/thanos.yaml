@@ -2960,7 +2960,7 @@ receive:
   args: []
   ## @param receive.replicaCount Number of Thanos Receive replicas to deploy
   ##
-  replicaCount: 2
+  replicaCount: 1
   ## @param receive.updateStrategy.type Update strategy type for Thanos Receive replicas
   ##
   updateStrategy:

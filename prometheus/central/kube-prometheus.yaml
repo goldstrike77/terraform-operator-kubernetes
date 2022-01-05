@@ -1508,7 +1508,7 @@ alertmanager:
       - ReadWriteOnce
     ## @param alertmanager.persistence.size Persistent Volume Size
     ##
-    size: 8Gi
+    size: 2Gi
   ## @param alertmanager.paused If true, the Operator won't process any Alertmanager configuration changes
   ##
   paused: false
