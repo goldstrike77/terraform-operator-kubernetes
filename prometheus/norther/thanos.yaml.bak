@@ -73,9 +73,9 @@ objstoreConfig: |-
   type: s3
   config:
     bucket: thanos
-    endpoint: demo-prd-cluster-storage-minio-thanos.service.dc01.local:9002
-    access_key: 0S7JIV3GMSKALH5UESWG
-    secret_key: XbWIJvQVT14QN97i6KZqYY8BPIUz6FlE5ifh4Khx
+    endpoint: demo-prd-cluster-storage-minio-oss.service.dc01.local
+    access_key: GA81CE6RMLAZZ8ETEZCG
+    secret_key: AQHUcMN7zu6o9q3MEBFyMG9ud49Np24I3eEKc6ra
     insecure: false
     http_config:
       idle_conn_timeout: 2m
@@ -130,7 +130,7 @@ query:
   ##
   dnsDiscovery:
     enabled: true
-    sidecarsService: kube-prometheus-prometheus-thanos
+    sidecarsService: kube-prometheus-kube-prome-thanos-discovery
     sidecarsNamespace: monitoring
   ## @param query.stores Statically configure store APIs to connect with Thanos Query
   ##
@@ -158,7 +158,8 @@ query:
   extraEnvVarsSecret: ""
   ## @param query.extraFlags Extra Flags to passed to Thanos Query
   ##
-  extraFlags: []
+  extraFlags:
+    - "--web.external-prefix=thanos-query"
   ## @param query.command Override default container command (useful when using custom images)
   ##
   command: []
@@ -520,10 +521,10 @@ query:
   ingress:
     ## @param query.ingress.enabled Enable ingress controller resource
     ##
-    enabled: false
+    enabled: true
     ## @param query.ingress.hostname Default host for the ingress resource
     ##
-    hostname: thanos.local
+    hostname: info.example.com
     ## @param query.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
@@ -540,7 +541,9 @@ query:
     ##   kubernetes.io/ingress.class: nginx
     ##   cert-manager.io/cluster-issuer: cluster-issuer-name
     ##
-    annotations: {}
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     ## @param query.ingress.extraHosts The list of additional hostnames to be covered with this ingress record.
     ## Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array
     ## extraHosts:
@@ -588,7 +591,7 @@ query:
     apiVersion: ""
     ## @param query.ingress.path Ingress path
     ##
-    path: /
+    path: /thanos-query/
     ## @param query.ingress.pathType Ingress path type
     ##
     pathType: ImplementationSpecific
@@ -911,7 +914,7 @@ queryFrontend:
   service:
     ## @param queryFrontend.service.type Kubernetes service type
     ##
-    type: LoadBalancer
+    type: ClusterIP
     ## @param queryFrontend.service.ports.http Thanos Query Frontend service HTTP port
     ##
     ports:
@@ -930,7 +933,7 @@ queryFrontend:
     ## Set the LoadBalancer service type to internal only
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: "10.101.4.37"
+    loadBalancerIP: "10.101.4.43"
     ## @param queryFrontend.service.loadBalancerSourceRanges Address that are allowed when service is LoadBalancer
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ## e.g:
@@ -1119,7 +1122,8 @@ bucketweb:
   extraEnvVarsSecret: ""
   ## @param bucketweb.extraFlags Extra Flags to passed to Thanos Bucket Web
   ##
-  extraFlags: []
+  extraFlags:
+    - "--web.external-prefix=thanos-bucketweb"
   ## @param bucketweb.command Override default container command (useful when using custom images)
   ##
   command: []
@@ -1315,7 +1319,7 @@ bucketweb:
   service:
     ## @param bucketweb.service.type Kubernetes service type
     ##
-    type: LoadBalancer
+    type: ClusterIP
     ## @param bucketweb.service.ports.http Thanos Bucket Web service HTTP port
     ##
     ports:
@@ -1333,7 +1337,7 @@ bucketweb:
     ## @param bucketweb.service.loadBalancerIP Load balancer IP if service type is `LoadBalancer`
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: "10.101.4.37"
+    loadBalancerIP: ""
     ## @param bucketweb.service.loadBalancerSourceRanges Address that are allowed when service is LoadBalancer
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ##
@@ -1346,8 +1350,7 @@ bucketweb:
     externalTrafficPolicy: Cluster
     ## @param bucketweb.service.annotations Annotations for Thanos Bucket Web service
     ##
-    annotations:
-      metallb.universe.tf/allow-shared-ip: shared
+    annotations: {}
     ## @param bucketweb.service.extraPorts Extra ports to expose in the Thanos Bucket Web service
     ##
     extraPorts: []
@@ -1393,10 +1396,10 @@ bucketweb:
   ingress:
     ## @param bucketweb.ingress.enabled Enable ingress controller resource
     ##
-    enabled: false
+    enabled: true
     ## @param bucketweb.ingress.hostname Default host for the ingress resource
     ##
-    hostname: thanos-bucketweb.local
+    hostname: info.example.com
     ## @param bucketweb.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
@@ -1413,7 +1416,9 @@ bucketweb:
     ##   kubernetes.io/ingress.class: nginx
     ##   cert-manager.io/cluster-issuer: cluster-issuer-name
     ##
-    annotations: {}
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     ## @param bucketweb.ingress.extraHosts The list of additional hostnames to be covered with this ingress record.
     ## Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array
     ## extraHosts:
@@ -1461,7 +1466,7 @@ bucketweb:
     apiVersion: ""
     ## @param bucketweb.ingress.path Ingress path
     ##
-    path: /
+    path: /thanos-bucketweb/
     ## @param bucketweb.ingress.pathType Ingress path type
     ##
     pathType: ImplementationSpecific
@@ -1506,6 +1511,7 @@ compactor:
   ##
   extraFlags:
     - "--compact.cleanup-interval=1h"
+    - "--web.external-prefix=thanos-compactor"
   ## @param compactor.command Override default container command (useful when using custom images)
   ##
   command: []
@@ -1753,10 +1759,10 @@ compactor:
   ingress:
     ## @param compactor.ingress.enabled Enable ingress controller resource
     ##
-    enabled: false
+    enabled: true
     ## @param compactor.ingress.hostname Default host for the ingress resource
     ##
-    hostname: thanos-compactor.local
+    hostname: info.example.com
     ## @param compactor.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
@@ -1773,7 +1779,9 @@ compactor:
     ##   kubernetes.io/ingress.class: nginx
     ##   cert-manager.io/cluster-issuer: cluster-issuer-name
     ##
-    annotations: {}
+    annotations:
+      kubernetes.io/ingress.class: ngin
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     ## @param compactor.ingress.extraHosts The list of additional hostnames to be covered with this ingress record.
     ## Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array
     ## extraHosts:
@@ -1821,7 +1829,7 @@ compactor:
     apiVersion: ""
     ## @param compactor.ingress.path Ingress path
     ##
-    path: /
+    path: /thanos-compactor/
     ## @param compactor.ingress.pathType Ingress path type
     ##
     pathType: ImplementationSpecific
@@ -1921,6 +1929,7 @@ storegateway:
     - "--store.grpc.series-max-concurrency=32"
     - "--block-sync-concurrency=32"
     - "--store.grpc.series-sample-limit=50000"
+    - "--web.external-prefix=thanos-storegateway"
   ## @param storegateway.command Override default container command (useful when using custom images)
   ##
   command: []
@@ -2233,10 +2242,10 @@ storegateway:
   ingress:
     ## @param storegateway.ingress.enabled Enable ingress controller resource
     ##
-    enabled: false
+    enabled: true
     ## @param storegateway.ingress.hostname Default host for the ingress resource
     ##
-    hostname: thanos-storegateway.local
+    hostname: info.example.com
     ## @param storegateway.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
@@ -2253,7 +2262,9 @@ storegateway:
     ##   kubernetes.io/ingress.class: nginx
     ##   cert-manager.io/cluster-issuer: cluster-issuer-name
     ##
-    annotations: {}
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     ## @param storegateway.ingress.extraHosts The list of additional hostnames to be covered with this ingress record.
     ## Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array
     ## extraHosts:
@@ -2301,7 +2312,7 @@ storegateway:
     apiVersion: ""
     ## @param storegateway.ingress.path Ingress path
     ##
-    path: /
+    path: /thanos-storegateway/
     ## @param storegateway.ingress.pathType Ingress path type
     ##
     pathType: ImplementationSpecific
@@ -3153,7 +3164,7 @@ receive:
   service:
     ## @param receive.service.type Kubernetes service type
     ##
-    type: LoadBalancer
+    type: ClusterIP
     ## @param receive.service.ports.http Thanos Ruler service HTTP port
     ## @param receive.service.ports.grpc Thanos Ruler service GRPC port
     ## @param receive.service.ports.remote Thanos Ruler service remote port
@@ -3179,7 +3190,7 @@ receive:
     ## @param receive.service.loadBalancerIP Load balancer IP if service type is `LoadBalancer`
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: "10.101.4.37"
+    loadBalancerIP: "10.101.4.43"
     ## @param receive.service.loadBalancerSourceRanges Addresses that are allowed when service is LoadBalancer
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ## e.g:

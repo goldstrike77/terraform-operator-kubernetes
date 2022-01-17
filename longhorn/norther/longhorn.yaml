@@ -38,7 +38,7 @@ defaultSettings:
   replicaZoneSoftAntiAffinity: null
   storageMinimalAvailablePercentage: null
   storageOverProvisioningPercentage: null
-  systemManagedComponentsNodeSelector: null
+  systemManagedComponentsNodeSelector: "longhorn/node:true"
   systemManagedPodsImagePullPolicy: null
   taintToleration: null
   upgradeChecker: null
