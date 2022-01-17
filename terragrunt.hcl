@@ -20,6 +20,7 @@ EOF
 }
 
 # 仍然必须指定每个工作目录中使用的状态文件后端，但不需要将配置一次又一次地复制和粘贴到每个工作目录，Terragrunt会在运行时根据模板和目录结构正确识别。
+# Consul
 remote_state {
   backend = "consul"
   config = {
@@ -35,7 +36,7 @@ generate "main" {
   if_exists = "overwrite_terragrunt"
   contents = <<EOF
 terraform {
-  backend "consul" {}
+ backend "consul" {}
 }
 provider kubernetes {
   config_path = "~/.kube/config"
