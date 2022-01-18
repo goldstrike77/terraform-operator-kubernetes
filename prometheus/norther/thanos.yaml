@@ -715,17 +715,22 @@ queryFrontend:
   extraEnvVarsSecret: ""
   ## @param queryFrontend.extraFlags Extra Flags to passed to Thanos Query Frontend
   ##
-  extraFlags:
-    - "--query-range.split-interval=1h"
-    - "--query-range.max-retries-per-request=10"
-    - "--query-range.max-query-parallelism=32"
-    - "--query-range.partial-response"
+  extraFlags: []
   ## @param queryFrontend.command Override default container command (useful when using custom images)
   ##
   command: []
   ## @param queryFrontend.args Override default container args (useful when using custom images)
   ##
-  args: []
+  args:
+    - "query-frontend"
+    - "--log.level=warn"
+    - "--log.format=logfmt"
+    - "--http-address=0.0.0.0:10902"
+    - "--query-frontend.downstream-url=http://thanos-query:9090/thanos-query"
+    - "--query-range.split-interval=1h"
+    - "--query-range.max-retries-per-request=10"
+    - "--query-range.max-query-parallelism=32"
+    - "--query-range.partial-response"
   ## @param queryFrontend.replicaCount Number of Thanos Query Frontend replicas to deploy
   ##
   replicaCount: 2

@@ -9,7 +9,7 @@ variable "deploy_spec" {
       grafana = {
         repository = "https://grafana.github.io/helm-charts"
         chart = "grafana"
-        version = "6.20.3"
+        version = "6.20.5"
         values = "grafana.yaml"
       }
     }
