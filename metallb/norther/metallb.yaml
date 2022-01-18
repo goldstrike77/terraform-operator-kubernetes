@@ -293,7 +293,7 @@ controller:
     serviceMonitor:
       ## @param controller.prometheus.serviceMonitor.enabled Specify if a servicemonitor will be deployed for prometheus-operator
       ##
-      enabled: false
+      enabled: true
       ## @param controller.prometheus.serviceMonitor.jobLabel Specify the jobLabel to use for the prometheus-operator
       ##
       jobLabel: "app.kubernetes.io/name"
