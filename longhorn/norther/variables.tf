@@ -5,6 +5,20 @@ variable "deploy_spec" {
       annotations = {}
       labels = {}
     }
+/*
+Generate a basic auth.
+USER=admin; PASSWORD=password; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})"
+*/
+    secret = {
+      basic-auth = {
+        annotations = {}
+        labels = {}
+        type = "Opaque"
+        data = {
+          auth = "admin:$apr1$sdfvLCI7$L0iMWekg57WuLr7CVFB5f."
+        }
+      }
+    }
     helm = {
       longhorn = {
         repository = "https://charts.longhorn.io"
