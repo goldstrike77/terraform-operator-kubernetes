@@ -85,18 +85,36 @@ objstoreConfig: |-
 ## Specify content for index-cache.yml
 ##
 indexCacheConfig: |-
-  type: IN-MEMORY
+  type: MEMCACHED
   config:
-    max_size: 1024MB
-    max_item_size: 0
+    addresses: ["memcached-store-index:11211"]
+    timeout: 500ms
+    max_idle_connections: 100
+    max_item_size: 1MiB
+    max_async_concurrency: 10
+    max_async_buffer_size: 10000
+    max_get_multi_concurrency: 100
+    max_get_multi_batch_size: 0
+    dns_provider_update_interval: 10s
+    expiration: 24h
+    auto_discovery: false
 ## @param bucketCacheConfig The [bucket cache configuration](https://thanos.io/tip/components/store.md/)
 ## Specify content for bucket-cache.yml
 ##
 bucketCacheConfig: |-
-  type: IN-MEMORY
+  type: MEMCACHED
   config:
-    max_size: 2048MB
-    max_item_size: 0
+    addresses: ["memcached-store-bucket:11211"]
+    timeout: 500ms
+    max_idle_connections: 100
+    max_item_size: 1MiB
+    max_async_concurrency: 10
+    max_async_buffer_size: 10000
+    max_get_multi_concurrency: 100
+    max_get_multi_batch_size: 0
+    dns_provider_update_interval: 10s
+    expiration: 24h
+    auto_discovery: false
 ## @param existingObjstoreSecret Secret with Objstore Configuration
 ## Note: This will override objstoreConfig
 ##
@@ -731,6 +749,36 @@ queryFrontend:
     - "--query-range.max-retries-per-request=10"
     - "--query-range.max-query-parallelism=32"
     - "--query-range.partial-response"
+    - |
+      --query-range.response-cache-config=
+      type: MEMCACHED
+      config:
+        addresses:
+          - memcached-queryfrontend:11211
+        timeout: 500ms
+        max_idle_connections: 100
+        max_async_concurrency: 10
+        max_async_buffer_size: 10000
+        max_get_multi_concurrency: 100
+        max_get_multi_batch_size: 0
+        dns_provider_update_interval: 10s
+        expiration: 24h
+        auto_discovery: false
+    - |
+      --labels.response-cache-config=
+      type: MEMCACHED
+      config:
+        addresses:
+          - memcached-queryfrontend:11211
+        timeout: 500ms
+        max_idle_connections: 100
+        max_async_concurrency: 10
+        max_async_buffer_size: 10000
+        max_get_multi_concurrency: 100
+        max_get_multi_batch_size: 0
+        dns_provider_update_interval: 10s
+        expiration: 24h
+        auto_discovery: false
   ## @param queryFrontend.replicaCount Number of Thanos Query Frontend replicas to deploy
   ##
   replicaCount: 2

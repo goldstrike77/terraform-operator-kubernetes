@@ -6,6 +6,24 @@ variable "deploy_spec" {
       labels = {}
     }
     helm = {
+      memcached-store-index = {
+        repository = "https://charts.bitnami.com/bitnami"
+        chart = "../../_chart/memcached-5.15.14.tgz"
+        version = "5.15.14"
+        values = "memcached.yaml"
+      },
+      memcached-store-bucket = {
+        repository = "https://charts.bitnami.com/bitnami"
+        chart = "../../_chart/memcached-5.15.14.tgz"
+        version = "5.15.14"
+        values = "memcached.yaml"
+      },
+      memcached-queryfrontend = {
+        repository = "https://charts.bitnami.com/bitnami"
+        chart = "../../_chart/memcached-5.15.14.tgz"
+        version = "5.15.14"
+        values = "memcached.yaml"
+      },
       thanos = {
         repository = "https://charts.bitnami.com/bitnami"
         chart = "../../_chart/thanos-8.3.0.tgz"
