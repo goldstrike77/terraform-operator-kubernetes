@@ -87,7 +87,7 @@ objstoreConfig: |-
 indexCacheConfig: |-
   type: MEMCACHED
   config:
-    addresses: ["memcached-store-index:11211"]
+    addresses: ["thanos-store-memcached-index:11211"]
     timeout: 500ms
     max_idle_connections: 100
     max_item_size: 1MiB
@@ -104,7 +104,7 @@ indexCacheConfig: |-
 bucketCacheConfig: |-
   type: MEMCACHED
   config:
-    addresses: ["memcached-store-bucket:11211"]
+    addresses: ["thanos-store-memcached-bucket:11211"]
     timeout: 500ms
     max_idle_connections: 100
     max_item_size: 1MiB
@@ -754,7 +754,7 @@ queryFrontend:
       type: MEMCACHED
       config:
         addresses:
-          - memcached-queryfrontend:11211
+          - thanos-queryfrontend-memcached:11211
         timeout: 500ms
         max_idle_connections: 100
         max_async_concurrency: 10

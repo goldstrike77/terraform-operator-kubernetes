@@ -65,13 +65,13 @@ readinessProbe:
   timeoutSeconds: 1
 
 # -- Resource requests and limits
-resources: {}
-#  limits:
-#    cpu: 200m
-#    memory: 128Mi
-#  requests:
-#    cpu: 100m
-#    memory: 128Mi
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 # -- The security context for pods
 podSecurityContext:
@@ -232,7 +232,7 @@ config:
   # -- The Loki address to post logs to.
   # Must be reference in `config.file` to configure `client.url`.
   # See default config in `values.yaml`
-  lokiAddress: http://10.101.4.37:8000/api/prom/push
+  lokiAddress: http://10.101.4.43:8000/api/prom/push
   # -- A section of reusable snippets that can be reference in `config.file`.
   # Custom snippets may be added in order to reduce redundancy.
   # This is especially helpful when multiple `kubernetes_sd_configs` are use which usually have large parts in common.
