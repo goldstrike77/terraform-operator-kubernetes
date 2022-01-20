@@ -36,17 +36,25 @@ controller:
   # Will add custom configuration options to Nginx https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
   config:
     compute-full-forwarded-for: "true"
+    enable-brotli: "true"
+    enable-modsecurity: "false"
+    enable-owasp-modsecurity-crs: "false"
     force-ssl-redirect: "true"
     forwarded-for-header: X-Forwarded-For
+    keep-alive: "60"
     keep-alive-requests: "2048"
     max-worker-connections: 20480
     real_ip_header: X-Forwarded-For
-    ssl_protocols: "TLSv1.2 TLSv1.3"
     ssl_ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
-    upstream-keepalive-connections: "1024"
-    use-forwarded-headers: "true"
+    ssl_protocols: "TLSv1.2 TLSv1.3"
+    upstream-keepalive-connections: "8192"
+    upstream-keepalive-requests: "256"
+    upstream-keepalive-timeout: "60"
     use-geoip: "false"
     use-gzip: "false"
+    use-http2: "true"
+    worker-cpu-affinity: "auto"
+    worker-processes: "1"
     # log-format-escape-json: "true"
     # log-format-upstream: '{"bodyBytesSent":$body_bytes_sent,"host":"$host","ingressName":"$ingress_name","namespace":"$namespace","protocol":"$server_protocol","proxyAlternativeUpstreamName":"$proxy_alternative_upstream_name","proxyUpstreamName":"$proxy_upstream_name","referer":"$http_referer","remoteIp":"$remote_addr","requestID":"$req_id","requestMethod":"$request_method","requestSize":"$request_length","requestTime":$request_time,"requestUrl":"$request_uri","serviceName":"$service_name","servicePort":"$service_port","status":$status,"timestamp":"$time_iso8601","upstreamAddr":"$upstream_addr","upstreamResponseSize":"$upstream_response_length","upstreamResponseTime":"$upstream_response_time","upstreamStatus":"$upstream_status","userAgent":"$http_user_agent"}'
 
@@ -360,10 +368,10 @@ controller:
   # https://engineering.indeedblog.com/blog/2019/12/cpu-throttling-regression-fix/
   resources:
     limits:
-      cpu: 100m
+      cpu: 1000m
       memory: 90Mi
     requests:
-      cpu: 100m
+      cpu: 1000m
       memory: 90Mi
 
   # Mutually exclusive with keda autoscaling
@@ -480,7 +488,7 @@ controller:
 
     ## Must be either "None" or "ClientIP" if set. Kubernetes will default to "None".
     ## Ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
-    sessionAffinity: "ClientIP"
+    sessionAffinity: "None"
 
     ## Specifies the health check node port (numeric port number) for the service. If healthCheckNodePort isn’t specified,
     ## the service controller allocates a port from your cluster’s NodePort range.

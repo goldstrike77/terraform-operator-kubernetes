@@ -24,9 +24,13 @@ fullnameOverride: ""
 
 ## Labels to apply to all resources
 ##
-commonLabels: {}
-# scmhash: abc123
-# myLabel: aakkmd
+commonLabels:
+  customer: "demo"
+  environment: "dev"
+  project: "cluster"
+  group: "norther"
+  datacenter: "dc01"
+  domain: "local"
 
 ## Create default rules for monitoring the cluster
 ##
@@ -2078,7 +2082,7 @@ prometheus:
     ## Paths to use for ingress rules - one path should match the prometheusSpec.routePrefix
     ##
     paths:
-     - /prometheus/
+     - /prometheus
 
     ## For Kubernetes >= 1.18 you should specify the pathType (determines how Ingress paths should be matched)
     ## See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#better-path-matching-with-path-types
