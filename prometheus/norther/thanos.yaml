@@ -3702,7 +3702,19 @@ metrics:
     metricRelabelings: []
     ## @param metrics.serviceMonitor.relabelings [array] Specify general relabeling
     ##
-    relabelings: []
+    relabelings:
+      - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+        targetLabel: customer
+      - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+        targetLabel: environment
+      - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+        targetLabel: project
+      - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+        targetLabel: group
+      - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+        targetLabel: datacenter
+      - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+        targetLabel: domain
     ## @param metrics.serviceMonitor.selector Prometheus instance selector labels
     ## ref: https://github.com/bitnami/charts/tree/master/bitnami/prometheus-operator#prometheus-configuration
     ##

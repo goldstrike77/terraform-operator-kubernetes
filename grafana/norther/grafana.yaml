@@ -103,11 +103,9 @@ extraConfigmapMounts: []
   #   configMap: certs-configmap
   #   readOnly: true
 
-
 extraEmptyDirMounts: []
   # - name: provisioning-notifiers
   #   mountPath: /etc/grafana/provisioning/notifiers
-
 
 # Apply extra labels to common labels.
 extraLabels: {}
@@ -130,7 +128,13 @@ downloadDashboards:
 # podAnnotations: {}
 
 ## Pod Labels
-# podLabels: {}
+podLabels:
+  customer: "demo"
+  environment: "dev"
+  project: "cluster"
+  group: "norther"
+  datacenter: "dc01"
+  domain: "local"
 
 podPortName: grafana
 
@@ -163,7 +167,19 @@ serviceMonitor:
   scheme: http
   tlsConfig: {}
   scrapeTimeout: 10s
-  relabelings: []
+  relabelings:
+    - sourceLabels: [__meta_kubernetes_pod_label_customer]
+      targetLabel: customer
+    - sourceLabels: [__meta_kubernetes_pod_label_environment]
+      targetLabel: environment
+    - sourceLabels: [__meta_kubernetes_pod_label_project]
+      targetLabel: project
+    - sourceLabels: [__meta_kubernetes_pod_label_group]
+      targetLabel: group
+    - sourceLabels: [__meta_kubernetes_pod_label_datacenter]
+      targetLabel: datacenter
+    - sourceLabels: [__meta_kubernetes_pod_label_domain]
+      targetLabel: domain
 
 extraExposePorts: []
  # - name: keycloak

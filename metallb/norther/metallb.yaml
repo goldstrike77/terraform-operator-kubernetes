@@ -24,7 +24,13 @@ nameOverride: ""
 fullnameOverride: ""
 ## @param commonLabels Add labels to all the deployed resources
 ##
-commonLabels: {}
+commonLabels:
+  customer: "demo"
+  environment: "dev"
+  project: "cluster"
+  group: "norther"
+  datacenter: "dc01"
+  domain: "local"
 ## @param commonAnnotations Add annotations to all the deployed resources
 ##
 commonAnnotations: {}
@@ -305,7 +311,19 @@ controller:
       metricRelabelings: []
       ## @param controller.prometheus.serviceMonitor.relabelings Specify general relabeling
       ##
-      relabelings: []
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+          targetLabel: customer
+        - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+          targetLabel: environment
+        - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+          targetLabel: project
+        - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+          targetLabel: group
+        - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+          targetLabel: datacenter
+        - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+          targetLabel: domain
 
 ## @section Speaker parameters
 
@@ -495,7 +513,7 @@ speaker:
     serviceMonitor:
       ## @param speaker.prometheus.serviceMonitor.enabled Enable support for Prometheus Operator
       ##
-      enabled: false
+      enabled: true
       ## @param speaker.prometheus.serviceMonitor.jobLabel Job label for scrape target
       ##
       jobLabel: "app.kubernetes.io/name"
@@ -507,4 +525,16 @@ speaker:
       metricRelabelings: []
       ## @param speaker.prometheus.serviceMonitor.relabelings Specify general relabeling
       ##
-      relabelings: []
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+          targetLabel: customer
+        - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+          targetLabel: environment
+        - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+          targetLabel: project
+        - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+          targetLabel: group
+        - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+          targetLabel: datacenter
+        - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+          targetLabel: domain

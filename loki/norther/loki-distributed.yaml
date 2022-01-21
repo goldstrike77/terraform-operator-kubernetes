@@ -260,7 +260,19 @@ serviceMonitor:
   scrapeTimeout: 10s
   # -- ServiceMonitor relabel configs to apply to samples before scraping
   # https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#relabelconfig
-  relabelings: []
+  relabelings:
+    - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+      targetLabel: customer
+    - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+      targetLabel: environment
+    - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+      targetLabel: project
+    - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+      targetLabel: group
+    - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+      targetLabel: datacenter
+    - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+      targetLabel: domain
   # -- ServiceMonitor will use http by default, but you can pick https as well
   scheme: http
   # -- ServiceMonitor will use these tlsConfig settings to make the health check requests
@@ -303,7 +315,13 @@ ingester:
   # -- Annotations for ingester pods
   podAnnotations: {}
   # -- Labels for ingestor service
-  serviceLabels: {}
+  serviceLabels:
+    customer: "demo"
+    environment: "dev"
+    project: "cluster"
+    group: "norther"
+    datacenter: "dc01"
+    domain: "local"
   # -- Additional CLI args for the ingester
   extraArgs: []
   # -- Environment variables to add to the ingester pods
@@ -379,7 +397,13 @@ distributor:
   # -- Annotations for distributor pods
   podAnnotations: {}
   # -- Labels for distributor service
-  serviceLabels: {}
+  serviceLabels:
+    customer: "demo"
+    environment: "dev"
+    project: "cluster"
+    group: "norther"
+    datacenter: "dc01"
+    domain: "local"
   # -- Additional CLI args for the distributor
   extraArgs: []
   # -- Environment variables to add to the distributor pods
@@ -442,7 +466,13 @@ querier:
   # -- Annotations for querier pods
   podAnnotations: {}
   # -- Labels for querier service
-  serviceLabels: {}
+  serviceLabels:
+    customer: "demo"
+    environment: "dev"
+    project: "cluster"
+    group: "norther"
+    datacenter: "dc01"
+    domain: "local"
   # -- Additional CLI args for the querier
   extraArgs: []
   # -- Environment variables to add to the querier pods
@@ -516,7 +546,13 @@ queryFrontend:
   # -- Annotations for query-frontend pods
   podAnnotations: {}
   # -- Labels for query-frontend service
-  serviceLabels: {}
+  serviceLabels:
+    customer: "demo"
+    environment: "dev"
+    project: "cluster"
+    group: "norther"
+    datacenter: "dc01"
+    domain: "local"
   # -- Additional CLI args for the query-frontend
   extraArgs: []
   # -- Environment variables to add to the query-frontend pods
@@ -860,7 +896,13 @@ compactor:
   # -- Annotations for compactor pods
   podAnnotations: {}
   # -- Labels for compactor service
-  serviceLabels: {}
+  serviceLabels:
+    customer: "demo"
+    environment: "dev"
+    project: "cluster"
+    group: "norther"
+    datacenter: "dc01"
+    domain: "local"
   # -- Additional CLI args for the compactor
   extraArgs: []
   # -- Environment variables to add to the compactor pods
@@ -1148,7 +1190,13 @@ memcachedChunks:
   # -- Annotations for memcached-chunks pods
   podAnnotations: {}
   # -- Labels for memcached-chunks service
-  serviceLabels: {}
+  serviceLabels:
+    customer: "demo"
+    environment: "dev"
+    project: "cluster"
+    group: "norther"
+    datacenter: "dc01"
+    domain: "local"
   # -- Additional CLI args for memcached-chunks
   extraArgs:
     - -m 2048
@@ -1199,7 +1247,13 @@ memcachedFrontend:
   # -- Annotations for memcached-frontend pods
   podAnnotations: {}
   # -- Labels for memcached-frontend service
-  serviceLabels: {}
+  serviceLabels:
+    customer: "demo"
+    environment: "dev"
+    project: "cluster"
+    group: "norther"
+    datacenter: "dc01"
+    domain: "local"
   # -- Additional CLI args for memcached-frontend
   extraArgs:
     - -m 2048
@@ -1250,7 +1304,13 @@ memcachedIndexQueries:
   # -- Annotations for memcached-index-queries pods
   podAnnotations: {}
   # -- Labels for memcached-index-queries service
-  serviceLabels: {}
+  serviceLabels:
+    customer: "demo"
+    environment: "dev"
+    project: "cluster"
+    group: "norther"
+    datacenter: "dc01"
+    domain: "local"
   # -- Additional CLI args for memcached-index-queries
   extraArgs:
     - -m 2048

@@ -134,7 +134,13 @@ controller:
     parameters: {}
 
   # labels to add to the pod container metadata
-  podLabels: {}
+  podLabels:
+    customer: "demo"
+    environment: "dev"
+    project: "cluster"
+    group: "norther"
+    datacenter: "dc01"
+    domain: "local"
   #  key: value
 
   ## Security Context policies for controller pods
@@ -218,9 +224,6 @@ controller:
   ## Labels to be added to the controller Deployment or DaemonSet and other resources that do not have option to specify labels
   ##
   labels: {}
-  #  keel.sh/policy: patch
-  #  keel.sh/trigger: poll
-
 
   # The update strategy to apply to the Deployment or DaemonSet
   ##
@@ -330,7 +333,7 @@ controller:
       scheme: HTTP
     initialDelaySeconds: 10
     periodSeconds: 10
-    timeoutSeconds: 1
+    timeoutSeconds: 3
     successThreshold: 1
     failureThreshold: 5
   readinessProbe:
@@ -341,7 +344,7 @@ controller:
       scheme: HTTP
     initialDelaySeconds: 10
     periodSeconds: 10
-    timeoutSeconds: 1
+    timeoutSeconds: 3
     successThreshold: 1
     failureThreshold: 3
 
@@ -369,10 +372,10 @@ controller:
   resources:
     limits:
       cpu: 1000m
-      memory: 90Mi
+      memory: 1Gi
     requests:
       cpu: 1000m
-      memory: 90Mi
+      memory: 1Gi
 
   # Mutually exclusive with keda autoscaling
   autoscaling:
@@ -679,7 +682,7 @@ controller:
 
     serviceMonitor:
       enabled: true
-      additionalLabels: {}
+      additionalLabels: {}    
       # The label to use to retrieve the job name from.
       # jobLabel: "app.kubernetes.io/name"
       namespace: ""
@@ -691,7 +694,19 @@ controller:
       scrapeInterval: 60s
       # honorLabels: true
       targetLabels: []
-      relabelings: []
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_label_customer]
+          targetLabel: customer
+        - sourceLabels: [__meta_kubernetes_pod_label_environment]
+          targetLabel: environment
+        - sourceLabels: [__meta_kubernetes_pod_label_project]
+          targetLabel: project
+        - sourceLabels: [__meta_kubernetes_pod_label_group]
+          targetLabel: group
+        - sourceLabels: [__meta_kubernetes_pod_label_datacenter]
+          targetLabel: datacenter
+        - sourceLabels: [__meta_kubernetes_pod_label_domain]
+          targetLabel: domain
       metricRelabelings: []
 
     prometheusRule:
@@ -795,13 +810,13 @@ defaultBackend:
     initialDelaySeconds: 30
     periodSeconds: 10
     successThreshold: 1
-    timeoutSeconds: 5
+    timeoutSeconds: 3
   readinessProbe:
     failureThreshold: 6
     initialDelaySeconds: 0
     periodSeconds: 5
     successThreshold: 1
-    timeoutSeconds: 5
+    timeoutSeconds: 3
 
   ## Node tolerations for server scheduling to nodes with taints
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -840,17 +855,17 @@ defaultBackend:
   ##
   podAnnotations: {}
 
-  replicaCount: 1
+  replicaCount: 2
 
   minAvailable: 1
 
   resources:
     limits:
-      cpu: 10m
-      memory: 20Mi
+      cpu: 100m
+      memory: 100Mi
     requests:
-      cpu: 10m
-      memory: 20Mi
+      cpu: 100m
+      memory: 100Mi
 
   extraVolumeMounts: []
   ## Additional volumeMounts to the default backend container.

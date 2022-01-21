@@ -35,6 +35,12 @@ metadata:
   namespace: longhorn-system
   labels:
     name: longhorn
+    customer: demo
+    datacenter: dc01
+    domain: local
+    environment: dev
+    group: norther
+    project: cluster
 spec:
   selector:
     matchLabels:
@@ -44,6 +50,25 @@ spec:
     - longhorn-system
   endpoints:
   - port: manager
+    relabelings:
+    - sourceLabels:
+      - __meta_kubernetes_endpoints_label_customer
+      targetLabel: customer
+    - sourceLabels:
+      - __meta_kubernetes_endpoints_label_environment
+      targetLabel: environment
+    - sourceLabels:
+      - __meta_kubernetes_endpoints_label_project
+      targetLabel: project
+    - sourceLabels:
+      - __meta_kubernetes_endpoints_label_group
+      targetLabel: group
+    - sourceLabels:
+      - __meta_kubernetes_endpoints_label_datacenter
+      targetLabel: datacenter
+    - sourceLabels:
+      - __meta_kubernetes_endpoints_label_domain
+      targetLabel: domain
 YAML
   }
 }
