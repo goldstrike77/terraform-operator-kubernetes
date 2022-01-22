@@ -34,7 +34,7 @@ defaultRules:
   create: true
   rules:
     alertmanager: true
-    etcd: true
+    etcd: false
     configReloaders: true
     general: true
     k8s: true
@@ -42,14 +42,14 @@ defaultRules:
     kubeApiserverAvailability: true
     kubeApiserverSlos: true
     kubelet: true
-    kubeProxy: true
+    kubeProxy: false
     kubePrometheusGeneral: true
     kubePrometheusNodeRecording: true
     kubernetesApps: true
     kubernetesResources: true
     kubernetesStorage: true
     kubernetesSystem: true
-    kubeScheduler: true
+    kubeScheduler: false
     kubeStateMetrics: true
     network: true
     node: true
@@ -820,7 +820,25 @@ kubeApiServer:
     ## RelabelConfigs to apply to samples before scraping
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
     ##
-    relabelings: []
+    relabelings:
+      - sourceLabels: [__address__]
+        targetLabel: customer
+        replacement: "demo"
+      - sourceLabels: [__address__]
+        targetLabel: environment
+        replacement: "dev"
+      - sourceLabels: [__address__]
+        targetLabel: project
+        replacement: "cluster"
+      - sourceLabels: [__address__]
+        targetLabel: group
+        replacement: "norther"
+      - sourceLabels: [__address__]
+        targetLabel: datacenter
+        replacement: "dc01"
+      - sourceLabels: [__address__]
+        targetLabel: domain
+        replacement: "local"
     # - sourceLabels:
     #     - __meta_kubernetes_namespace
     #     - __meta_kubernetes_service_name
@@ -856,7 +874,7 @@ kubelet:
 
     ## Enable scraping /metrics/probes from kubelet's service
     ##
-    probes: true
+    probes: false
 
     ## Enable scraping /metrics/resource from kubelet's service
     ## This is disabled by default because container metrics are already exposed by cAdvisor
@@ -902,6 +920,24 @@ kubelet:
     cAdvisorRelabelings:
       - sourceLabels: [__metrics_path__]
         targetLabel: metrics_path
+      - sourceLabels: [__address__]
+        targetLabel: customer
+        replacement: "demo"
+      - sourceLabels: [__address__]
+        targetLabel: environment
+        replacement: "dev"
+      - sourceLabels: [__address__]
+        targetLabel: project
+        replacement: "cluster"
+      - sourceLabels: [__address__]
+        targetLabel: group
+        replacement: "norther"
+      - sourceLabels: [__address__]
+        targetLabel: datacenter
+        replacement: "dc01"
+      - sourceLabels: [__address__]
+        targetLabel: domain
+        replacement: "local"
     # - sourceLabels: [__meta_kubernetes_pod_node_name]
     #   separator: ;
     #   regex: ^(.*)$
@@ -957,6 +993,24 @@ kubelet:
     relabelings:
       - sourceLabels: [__metrics_path__]
         targetLabel: metrics_path
+      - sourceLabels: [__address__]
+        targetLabel: customer
+        replacement: "demo"
+      - sourceLabels: [__address__]
+        targetLabel: environment
+        replacement: "dev"
+      - sourceLabels: [__address__]
+        targetLabel: project
+        replacement: "cluster"
+      - sourceLabels: [__address__]
+        targetLabel: group
+        replacement: "norther"
+      - sourceLabels: [__address__]
+        targetLabel: datacenter
+        replacement: "dc01"
+      - sourceLabels: [__address__]
+        targetLabel: domain
+        replacement: "local"
     # - sourceLabels: [__meta_kubernetes_pod_node_name]
     #   separator: ;
     #   regex: ^(.*)$
@@ -1058,7 +1112,25 @@ coreDns:
     ## RelabelConfigs to apply to samples before scraping
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
     ##
-    relabelings: []
+    relabelings:
+      - sourceLabels: [__address__]
+        targetLabel: customer
+        replacement: "demo"
+      - sourceLabels: [__address__]
+        targetLabel: environment
+        replacement: "dev"
+      - sourceLabels: [__address__]
+        targetLabel: project
+        replacement: "cluster"
+      - sourceLabels: [__address__]
+        targetLabel: group
+        replacement: "norther"
+      - sourceLabels: [__address__]
+        targetLabel: datacenter
+        replacement: "dc01"
+      - sourceLabels: [__address__]
+        targetLabel: domain
+        replacement: "local"
     # - sourceLabels: [__meta_kubernetes_pod_node_name]
     #   separator: ;
     #   regex: ^(.*)$
@@ -1411,7 +1483,31 @@ prometheus-node-exporter:
       ## RelabelConfigs to apply to samples before scraping
       ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
       ##
-      relabelings: []
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          separator: ;
+          regex: ^(.*)$
+          targetLabel: instance
+          replacement: $1
+          action: replace
+        - sourceLabels: [__address__]
+          targetLabel: customer
+          replacement: "demo"
+        - sourceLabels: [__address__]
+          targetLabel: environment
+          replacement: "dev"
+        - sourceLabels: [__address__]
+          targetLabel: project
+          replacement: "cluster"
+        - sourceLabels: [__address__]
+          targetLabel: group
+          replacement: "norther"
+        - sourceLabels: [__address__]
+          targetLabel: datacenter
+          replacement: "dc01"
+        - sourceLabels: [__address__]
+          targetLabel: domain
+          replacement: "local"
       # - sourceLabels: [__meta_kubernetes_pod_node_name]
       #   separator: ;
       #   regex: ^(.*)$
@@ -1598,13 +1694,25 @@ prometheusOperator:
 
     #   relabel configs to apply to samples before ingestion.
     ##
-    relabelings: []
-    # - sourceLabels: [__meta_kubernetes_pod_node_name]
-    #   separator: ;
-    #   regex: ^(.*)$
-    #   targetLabel: nodename
-    #   replacement: $1
-    #   action: replace
+    relabelings:
+      - sourceLabels: [__address__]
+        targetLabel: customer
+        replacement: "demo"
+      - sourceLabels: [__address__]
+        targetLabel: environment
+        replacement: "dev"
+      - sourceLabels: [__address__]
+        targetLabel: project
+        replacement: "cluster"
+      - sourceLabels: [__address__]
+        targetLabel: group
+        replacement: "norther"
+      - sourceLabels: [__address__]
+        targetLabel: datacenter
+        replacement: "dc01"
+      - sourceLabels: [__address__]
+        targetLabel: domain
+        replacement: "local"
 
   ## Resource limits & requests
   ##
@@ -2045,13 +2153,25 @@ prometheus:
 
     #   relabel configs to apply to samples before ingestion.
     ##
-    relabelings: []
-    # - sourceLabels: [__meta_kubernetes_pod_node_name]
-    #   separator: ;
-    #   regex: ^(.*)$
-    #   targetLabel: nodename
-    #   replacement: $1
-    #   action: replace
+    relabelings:
+      - sourceLabels: [__address__]
+        targetLabel: customer
+        replacement: "demo"
+      - sourceLabels: [__address__]
+        targetLabel: environment
+        replacement: "dev"
+      - sourceLabels: [__address__]
+        targetLabel: project
+        replacement: "cluster"
+      - sourceLabels: [__address__]
+        targetLabel: group
+        replacement: "norther"
+      - sourceLabels: [__address__]
+        targetLabel: datacenter
+        replacement: "dc01"
+      - sourceLabels: [__address__]
+        targetLabel: domain
+        replacement: "local"
 
   ## Settings affecting prometheusSpec
   ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#prometheusspec
@@ -2197,7 +2317,7 @@ prometheus:
     ## prometheus resource to be created with selectors based on values in the helm deployment,
     ## which will also match the PrometheusRule resources created
     ##
-    ruleSelectorNilUsesHelmValues: true
+    ruleSelectorNilUsesHelmValues: false
 
     ## PrometheusRules to be selected for target discovery.
     ## If {}, select all PrometheusRules

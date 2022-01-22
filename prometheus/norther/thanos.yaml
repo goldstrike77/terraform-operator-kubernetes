@@ -29,13 +29,7 @@ nameOverride: ""
 fullnameOverride: ""
 ## @param commonLabels Add labels to all the deployed resources
 ##
-commonLabels:
-  customer: "demo"
-  environment: "dev"
-  project: "cluster"
-  group: "norther"
-  datacenter: "dc01"
-  domain: "local"
+commonLabels: {}
 ## @param commonAnnotations Add annotations to all the deployed resources
 ##
 commonAnnotations: {}
@@ -3703,18 +3697,24 @@ metrics:
     ## @param metrics.serviceMonitor.relabelings [array] Specify general relabeling
     ##
     relabelings:
-      - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+      - sourceLabels: [__address__]
         targetLabel: customer
-      - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+        replacement: "demo"
+      - sourceLabels: [__address__]
         targetLabel: environment
-      - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+        replacement: "dev"
+      - sourceLabels: [__address__]
         targetLabel: project
-      - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+        replacement: "cluster"
+      - sourceLabels: [__address__]
         targetLabel: group
-      - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+        replacement: "norther"
+      - sourceLabels: [__address__]
         targetLabel: datacenter
-      - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+        replacement: "dc01"
+      - sourceLabels: [__address__]
         targetLabel: domain
+        replacement: "local"
     ## @param metrics.serviceMonitor.selector Prometheus instance selector labels
     ## ref: https://github.com/bitnami/charts/tree/master/bitnami/prometheus-operator#prometheus-configuration
     ##

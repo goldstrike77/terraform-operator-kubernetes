@@ -31,13 +31,7 @@ service:
   annotations: {}
 
 ## Additional labels to add to all resources
-customLabels:
-  customer: "demo"
-  environment: "dev"
-  project: "cluster"
-  group: "norther"
-  datacenter: "dc01"
-  domain: "local"
+customLabels: {}
 
 ## set to true to add the release label so scraping of the servicemonitor with kube-prometheus-stack works out of the box
 releaseLabel: false
@@ -81,18 +75,24 @@ prometheus:
     honorLabels: false
     metricRelabelings: []
     relabelings:
-      - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+      - sourceLabels: [__address__]
         targetLabel: customer
-      - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+        replacement: "demo"
+      - sourceLabels: [__address__]
         targetLabel: environment
-      - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+        replacement: "dev"
+      - sourceLabels: [__address__]
         targetLabel: project
-      - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+        replacement: "cluster"
+      - sourceLabels: [__address__]
         targetLabel: group
-      - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+        replacement: "norther"
+      - sourceLabels: [__address__]
         targetLabel: datacenter
-      - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+        replacement: "dc01"
+      - sourceLabels: [__address__]
         targetLabel: domain
+        replacement: "local"
 
 ## Specify if a Pod Security Policy for kube-state-metrics must be created
 ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/

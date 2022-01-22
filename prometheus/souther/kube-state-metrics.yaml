@@ -75,7 +75,25 @@ prometheus:
     selectorOverride: {}
     honorLabels: false
     metricRelabelings: []
-    relabelings: []
+    relabelings:
+      - sourceLabels: [__address__]
+        targetLabel: customer
+        replacement: "demo"
+      - sourceLabels: [__address__]
+        targetLabel: environment
+        replacement: "dev"
+      - sourceLabels: [__address__]
+        targetLabel: project
+        replacement: "cluster"
+      - sourceLabels: [__address__]
+        targetLabel: group
+        replacement: "norther"
+      - sourceLabels: [__address__]
+        targetLabel: datacenter
+        replacement: "dc01"
+      - sourceLabels: [__address__]
+        targetLabel: domain
+        replacement: "local"
 
 ## Specify if a Pod Security Policy for kube-state-metrics must be created
 ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/

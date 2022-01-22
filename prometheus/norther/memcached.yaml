@@ -26,13 +26,7 @@ nameOverride: ""
 fullnameOverride: ""
 ## @param commonLabels Labels to add to all deployed objects
 ##
-commonLabels:
-  customer: "demo"
-  environment: "dev"
-  project: "cluster"
-  group: "norther"
-  datacenter: "dc01"
-  domain: "local"
+commonLabels: {}
 ## @param commonAnnotations Annotations to add to all deployed objects
 ##
 commonAnnotations: {}
@@ -461,18 +455,24 @@ metrics:
     ##   action: replace
     ##
     relabelings:
-      - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+      - sourceLabels: [__address__]
         targetLabel: customer
-      - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+        replacement: "demo"
+      - sourceLabels: [__address__]
         targetLabel: environment
-      - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+        replacement: "dev"
+      - sourceLabels: [__address__]
         targetLabel: project
-      - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+        replacement: "cluster"
+      - sourceLabels: [__address__]
         targetLabel: group
-      - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+        replacement: "norther"
+      - sourceLabels: [__address__]
         targetLabel: datacenter
-      - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+        replacement: "dc01"
+      - sourceLabels: [__address__]
         targetLabel: domain
+        replacement: "local"
 ## Init Container parameters
 ## Change the owner and group of the persistent volume(s) mountpoint(s) to 'runAsUser:fsGroup' on each component
 ## values from the securityContext section of the component

@@ -24,13 +24,7 @@ fullnameOverride: ""
 
 ## Labels to apply to all resources
 ##
-commonLabels:
-  customer: "demo"
-  environment: "dev"
-  project: "cluster"
-  group: "norther"
-  datacenter: "dc01"
-  domain: "local"
+commonLabels: {}
 
 ## Create default rules for monitoring the cluster
 ##
@@ -38,7 +32,7 @@ defaultRules:
   create: true
   rules:
     alertmanager: true
-    etcd: true
+    etcd: false
     configReloaders: true
     general: true
     k8s: true
@@ -46,14 +40,14 @@ defaultRules:
     kubeApiserverAvailability: true
     kubeApiserverSlos: true
     kubelet: true
-    kubeProxy: true
+    kubeProxy: false
     kubePrometheusGeneral: true
     kubePrometheusNodeRecording: true
     kubernetesApps: true
     kubernetesResources: true
     kubernetesStorage: true
     kubernetesSystem: true
-    kubeScheduler: true
+    kubeScheduler: false
     kubeStateMetrics: true
     network: true
     node: true
@@ -509,18 +503,24 @@ alertmanager:
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
     ##
     relabelings:
-      - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+      - sourceLabels: [__address__]
         targetLabel: customer
-      - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+        replacement: "demo"
+      - sourceLabels: [__address__]
         targetLabel: environment
-      - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+        replacement: "dev"
+      - sourceLabels: [__address__]
         targetLabel: project
-      - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+        replacement: "cluster"
+      - sourceLabels: [__address__]
         targetLabel: group
-      - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+        replacement: "norther"
+      - sourceLabels: [__address__]
         targetLabel: datacenter
-      - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+        replacement: "dc01"
+      - sourceLabels: [__address__]
         targetLabel: domain
+        replacement: "local"
 
   ## Settings affecting alertmanagerSpec
   ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#alertmanagerspec
@@ -1794,18 +1794,24 @@ prometheusOperator:
     #   relabel configs to apply to samples before ingestion.
     ##
     relabelings:
-      - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+      - sourceLabels: [__address__]
         targetLabel: customer
-      - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+        replacement: "demo"
+      - sourceLabels: [__address__]
         targetLabel: environment
-      - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+        replacement: "dev"
+      - sourceLabels: [__address__]
         targetLabel: project
-      - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+        replacement: "cluster"
+      - sourceLabels: [__address__]
         targetLabel: group
-      - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+        replacement: "norther"
+      - sourceLabels: [__address__]
         targetLabel: datacenter
-      - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+        replacement: "dc01"
+      - sourceLabels: [__address__]
         targetLabel: domain
+        replacement: "local"
 
   ## Resource limits & requests
   ##
@@ -1980,18 +1986,24 @@ prometheus:
 
     ## relabel configs to apply to samples before ingestion.
     relabelings:
-      - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+      - sourceLabels: [__address__]
         targetLabel: customer
-      - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+        replacement: "demo"
+      - sourceLabels: [__address__]
         targetLabel: environment
-      - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+        replacement: "dev"
+      - sourceLabels: [__address__]
         targetLabel: project
-      - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+        replacement: "cluster"
+      - sourceLabels: [__address__]
         targetLabel: group
-      - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+        replacement: "norther"
+      - sourceLabels: [__address__]
         targetLabel: datacenter
-      - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+        replacement: "dc01"
+      - sourceLabels: [__address__]
         targetLabel: domain
+        replacement: "local"
 
   # Service for external access to sidecar
   # Enabling this creates a service to expose thanos-sidecar outside the cluster.
@@ -2259,18 +2271,24 @@ prometheus:
     #   relabel configs to apply to samples before ingestion.
     ##
     relabelings:
-      - sourceLabels: [__meta_kubernetes_endpoints_label_customer]
+      - sourceLabels: [__address__]
         targetLabel: customer
-      - sourceLabels: [__meta_kubernetes_endpoints_label_environment]
+        replacement: "demo"
+      - sourceLabels: [__address__]
         targetLabel: environment
-      - sourceLabels: [__meta_kubernetes_endpoints_label_project]
+        replacement: "dev"
+      - sourceLabels: [__address__]
         targetLabel: project
-      - sourceLabels: [__meta_kubernetes_endpoints_label_group]
+        replacement: "cluster"
+      - sourceLabels: [__address__]
         targetLabel: group
-      - sourceLabels: [__meta_kubernetes_endpoints_label_datacenter]
+        replacement: "norther"
+      - sourceLabels: [__address__]
         targetLabel: datacenter
-      - sourceLabels: [__meta_kubernetes_endpoints_label_domain]
+        replacement: "dc01"
+      - sourceLabels: [__address__]
         targetLabel: domain
+        replacement: "local"
 
   ## Settings affecting prometheusSpec
   ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#prometheusspec
@@ -2416,7 +2434,7 @@ prometheus:
     ## prometheus resource to be created with selectors based on values in the helm deployment,
     ## which will also match the PrometheusRule resources created
     ##
-    ruleSelectorNilUsesHelmValues: true
+    ruleSelectorNilUsesHelmValues: false
 
     ## PrometheusRules to be selected for target discovery.
     ## If {}, select all PrometheusRules
