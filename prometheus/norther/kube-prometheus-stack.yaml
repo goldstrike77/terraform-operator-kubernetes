@@ -345,7 +345,7 @@ alertmanager:
     ## Hosts must be provided if Ingress is enabled.
     ##
     hosts:
-      - info.example.com
+      - norther.example.com
 
     ## Paths to use for ingress rules - one path should match the alertmanagerSpec.routePrefix
     ##
@@ -416,8 +416,7 @@ alertmanager:
   ## Configuration for Alertmanager service
   ##
   service:
-    annotations:
-      metallb.universe.tf/allow-shared-ip: shared
+    annotations: {}
     labels: {}
     clusterIP: ""
 
@@ -439,11 +438,11 @@ alertmanager:
     additionalPorts: []
 
     externalIPs: []
-    loadBalancerIP: "10.101.4.43"
+    loadBalancerIP: ""
     loadBalancerSourceRanges: []
     ## Service type
     ##
-    type: LoadBalancer
+    type: ClusterIP
 
   ## Configuration for creating a separate Service for each statefulset Alertmanager replica
   ##
@@ -627,7 +626,7 @@ alertmanager:
 
     ## The external URL the Alertmanager instances will be available under. This is necessary to generate correct URLs. This is necessary if Alertmanager is not served from root of a DNS name. string  false
     ##
-    externalUrl: https://info.example.com/alertmanager/
+    externalUrl: https://norther.example.com/alertmanager/
 
     ## The route prefix Alertmanager registers HTTP handlers for. This is useful, if using ExternalURL and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true,
     ## but the server serves requests under a different route prefix. For example for use with kubectl proxy.
@@ -646,9 +645,13 @@ alertmanager:
     ## Define resources requests and limits for single Pods.
     ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
     ##
-    resources: {}
-    # requests:
-    #   memory: 400Mi
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
     ## Pod anti-affinity can prevent the scheduler from placing Prometheus replicas on the same node.
     ## The default value "soft" means that the scheduler should *prefer* to not schedule two replica pods onto the same node but no guarantee is provided.
@@ -1154,7 +1157,7 @@ kubeControllerManager:
     #   component: kube-controller-manager
 
   serviceMonitor:
-    enabled: true
+    enabled: false
     ## Scrape interval. If not set, the Prometheus default scrape interval is used.
     ##
     interval: ""
@@ -1613,6 +1616,13 @@ prometheus-node-exporter:
         - sourceLabels: [__address__]
           targetLabel: domain
           replacement: "local"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 50Mi
+    requests:
+      cpu: 100m
+      memory: 50Mi
   rbac:
     ## If true, create PSPs for node-exporter
     ##
@@ -1959,7 +1969,7 @@ prometheus:
 
     ## ClusterIP to assign
     # Default is to make this a headless service ("None")
-    clusterIP: ""
+    clusterIP: "None"
 
     ## Port to expose on each node, if service type is NodePort
     ##
@@ -2176,7 +2186,7 @@ prometheus:
     ## Must be provided if Ingress is enabled.
     ##
     hosts: 
-      - info.example.com
+      - norther.example.com
 
     ## Paths to use for ingress rules - one path should match the prometheusSpec.routePrefix
     ##
@@ -2400,7 +2410,7 @@ prometheus:
 
     ## External URL at which Prometheus will be reachable.
     ##
-    externalUrl: "https://info.example.com/prometheus/"
+    externalUrl: "https://norther.example.com/prometheus/"
 
     ## Define which Nodes the Pods are scheduled on.
     ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -2613,9 +2623,13 @@ prometheus:
 
     ## Resource limits & requests
     ##
-    resources: {}
-    # requests:
-    #   memory: 400Mi
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1000Mi
+      limits:
+        cpu: 500m
+        memory: 1000Mi
 
     ## Prometheus StorageSpec for persistent data
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md

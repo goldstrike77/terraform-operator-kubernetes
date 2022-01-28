@@ -110,11 +110,11 @@ service:
 
 resources:
   limits:
-    cpu: 200m
-    memory: 200Mi
+    cpu: 100m
+    memory: 100Mi
   requests:
-    cpu: 200m
-    memory: 200Mi
+    cpu: 100m
+    memory: 100Mi
 
 extraVolumeMounts: []
 

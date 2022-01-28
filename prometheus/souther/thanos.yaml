@@ -72,7 +72,7 @@ image:
 objstoreConfig: |-
   type: s3
   config:
-    bucket: thanos-norther
+    bucket: thanos-souther
     endpoint: demo-prd-cluster-storage-minio-oss.service.dc01.local
     access_key: GA81CE6RMLAZZ8ETEZCG
     secret_key: AQHUcMN7zu6o9q3MEBFyMG9ud49Np24I3eEKc6ra
@@ -152,9 +152,7 @@ query:
     sidecarsNamespace: monitoring
   ## @param query.stores Statically configure store APIs to connect with Thanos Query
   ##
-  stores:
-    - 10.101.4.43:10901
-    - 10.101.4.43:10903
+  stores: []
   ## @param query.sdConfig Query Service Discovery Configuration
   ## Specify content for servicediscovery.yml
   ##
@@ -549,7 +547,7 @@ query:
     enabled: true
     ## @param query.ingress.hostname Default host for the ingress resource
     ##
-    hostname: norther.example.com
+    hostname: souther.example.com
     ## @param query.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
@@ -1467,7 +1465,7 @@ bucketweb:
     enabled: true
     ## @param bucketweb.ingress.hostname Default host for the ingress resource
     ##
-    hostname: norther.example.com
+    hostname: souther.example.com
     ## @param bucketweb.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
@@ -2201,13 +2199,13 @@ storegateway:
   service:
     ## @param storegateway.service.type Kubernetes service type
     ##
-    type: ClusterIP
+    type: LoadBalancer
     ## @param storegateway.service.ports.http Thanos Store Gateway service HTTP port
     ## @param storegateway.service.ports.grpc Thanos Store Gateway service GRPC port
     ##
     ports:
-      http: 9090
-      grpc: 10901
+      http: 10904
+      grpc: 10903
     ## @param storegateway.service.nodePorts.http Specify the Thanos Store Gateway HTTP nodePort value for the LoadBalancer and NodePort service types
     ## @param storegateway.service.nodePorts.grpc Specify the Thanos Store Gateway GRPC nodePort value for the LoadBalancer and NodePort service types
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
@@ -2224,21 +2222,22 @@ storegateway:
     ## Set the LoadBalancer service type to internal only
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
     ##
-    loadBalancerIP: ""
+    loadBalancerIP: "10.101.4.43"
     ## @param storegateway.service.loadBalancerSourceRanges Addresses that are allowed when service is LoadBalancer
     ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
     ## e.g:
     ## loadBalancerSourceRanges:
     ## - 10.10.10.0/24
     ##
-    loadBalancerSourceRanges: []
+    loadBalancerSourceRanges: ["10.101.4.32/28"]
     ## @param storegateway.service.externalTrafficPolicy Thanos Store Gateway service externalTrafficPolicy
     ## Denotes if this Service desires to route external traffic to node-local or cluster-wide endpoints
     ##
     externalTrafficPolicy: Cluster
     ## @param storegateway.service.annotations Annotations for Thanos Store Gateway service
     ##
-    annotations: {}
+    annotations:
+      metallb.universe.tf/allow-shared-ip: shared
     ## @param storegateway.service.extraPorts Extra ports to expose in the Thanos Store Gateway service
     ##
     extraPorts: []
@@ -3729,7 +3728,7 @@ metrics:
         replacement: "cluster"
       - sourceLabels: [__address__]
         targetLabel: group
-        replacement: "norther"
+        replacement: "souther"
       - sourceLabels: [__address__]
         targetLabel: datacenter
         replacement: "dc01"

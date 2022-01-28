@@ -479,7 +479,7 @@ controller:
     ##
     externalIPs: []
 
-    loadBalancerIP: "10.101.4.41"
+    loadBalancerIP: "10.101.4.43"
     loadBalancerSourceRanges: []
 
     enableHttp: true

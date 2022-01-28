@@ -73,7 +73,7 @@ configInline:
     # will all share the same settings. Each range can be either a
     # CIDR prefix, or an explicit start-end range of IPs.
     addresses:
-    - 10.101.4.41-10.101.4.42
+    - 10.101.4.43-10.101.4.44
 
 ## RBAC creation for controller and speaker
 ##

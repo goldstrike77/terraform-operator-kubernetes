@@ -95,7 +95,7 @@ ingress:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       rewrite ^(/longhorn)$ $1/ redirect;
   enabled: true
-  host: norther.example.com
+  host: souther.example.com
   path: /longhorn(/|$)(.*)
   ingressClassName: nginx
   secrets: null

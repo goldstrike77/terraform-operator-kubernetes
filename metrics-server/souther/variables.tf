@@ -8,7 +8,7 @@ variable "deploy_spec" {
     helm = {
       metrics-server = {
         repository = "https://kubernetes-sigs.github.io/metrics-server"
-        chart = "metrics-server"
+        chart = "../../_chart/metrics-server-3.7.0.tgz"
         version = "3.7.0"
         values = "metrics-server.yaml"
       }
