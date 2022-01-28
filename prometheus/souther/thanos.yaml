@@ -131,7 +131,7 @@ existingServiceAccount: ""
 query:
   ## @param query.enabled Set to true to enable Thanos Query component
   ##
-  enabled: true
+  enabled: false
   ## @param query.logLevel Thanos Query log level
   ##
   logLevel: warn
@@ -707,7 +707,7 @@ query:
 queryFrontend:
   ## @param queryFrontend.enabled Enable/disable Thanos Query Frontend component
   ##
-  enabled: true
+  enabled: false
   ## @param queryFrontend.logLevel Thanos Query Frontend log level
   ##
   logLevel: warn

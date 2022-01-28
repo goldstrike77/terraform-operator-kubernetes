@@ -18,12 +18,6 @@ variable "deploy_spec" {
         version = "6.0.2"
         values = "memcached.yaml"
       },
-      thanos-queryfrontend-memcached = {
-        repository = "https://charts.bitnami.com/bitnami"
-        chart = "../../_chart/memcached-6.0.2.tgz"
-        version = "6.0.2"
-        values = "memcached.yaml"
-      },
       thanos = {
         repository = "https://charts.bitnami.com/bitnami"
         chart = "../../_chart/thanos-9.0.1.tgz"

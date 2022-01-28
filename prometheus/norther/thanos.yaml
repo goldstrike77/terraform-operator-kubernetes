@@ -775,7 +775,7 @@ queryFrontend:
       type: MEMCACHED
       config:
         addresses:
-          - memcached-queryfrontend:11211
+          - thanos-queryfrontend-memcached:11211
         timeout: 500ms
         max_idle_connections: 100
         max_async_concurrency: 10
