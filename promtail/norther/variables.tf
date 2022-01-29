@@ -8,8 +8,8 @@ variable "deploy_spec" {
     helm = {
       promtail = {
         repository = "https://grafana.github.io/helm-charts"
-        chart = "promtail"
-        version = "3.10.0"
+        chart = "../../_chart/promtail-3.11.0.tgz"
+        version = "3.11.0"
         values = "promtail.yaml"
       }
     }

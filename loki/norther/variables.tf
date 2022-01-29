@@ -6,10 +6,10 @@ variable "deploy_spec" {
       labels = {}
     }
     helm = {
-      loki-distributed = {
+      loki = {
         repository = "https://grafana.github.io/helm-charts"
-        chart = "loki-distributed"
-        version = "0.40.0"
+        chart = "../../_chart/loki-distributed-0.42.0.tgz"
+        version = "0.42.0"
         values = "loki-distributed.yaml"
       }
     }
